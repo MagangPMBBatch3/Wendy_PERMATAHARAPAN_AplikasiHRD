@@ -1,0 +1,66 @@
+type PenguranganTelat {
+    id: ID!
+    staff_id: ID!
+    dt_payroll_id: ID!
+    keterangan: String!
+    jumlah: Float!
+    tanggal: Date!
+    waktu_datang: String!
+    durasi_telat: Float!
+    created_at: DateTime
+    updated_at: DateTime
+    deleted_at: DateTime
+    staff: Staff
+    detailPayroll: DetailPayroll
+}
+
+input CreatePenguranganTelatInput {
+    staff_id: ID!
+    dt_payroll_id: ID!
+    keterangan: String!
+    jumlah: Float!
+    tanggal: Date!
+    waktu_datang: String!
+    durasi_telat: Float!
+}
+
+input UpdatePenguranganTelatInput {
+    staff_id: ID
+    dt_payroll_id: ID
+    keterangan: String
+    jumlah: Float
+    tanggal: Date
+    waktu_datang: String
+    durasi_telat: Float
+}
+
+extend type Query {
+    # ambil semua pengurangan telat (yg blm hapus)
+    allPenguranganTelat: [PenguranganTelat!]!
+    @all(model: "App\\Models\\PenguranganTelat")
+
+    # cari berdasarkan id
+    penguranganTelat(id: ID! @eq(key: "id")): PenguranganTelat
+    @find(model: "App\\Models\\PenguranganTelat")
+
+    # cari berdasarkan staff_id
+    penguranganTelatByStaffId(staff_id: ID! @eq(key: "staff_id")): [PenguranganTelat!]!
+    @all(model: "App\\Models\\PenguranganTelat")
+}
+
+extend type Mutation {
+    createPenguranganTelat(input: CreatePenguranganTelatInput! @spread): PenguranganTelat @create(model: "App\\Models\\PenguranganTelat")
+
+    updatePenguranganTelat(id: ID! @eq(key: "id"),
+    input: UpdatePenguranganTelatInput! @spread): PenguranganTelat
+    @update(model: "App\\Models\\PenguranganTelat")
+
+    deletePenguranganTelat(id: ID! @eq(key: "id")): PenguranganTelat
+    @delete(model: "App\\Models\\PenguranganTelat")
+
+    restorePenguranganTelat(id: ID!): PenguranganTelat
+    @field(resolver: "App\\GraphQL\\PenguranganTelat\\Mutations\\PenguranganTelatMutation@restore")
+
+    forceDeletePenguranganTelat(id: ID!): PenguranganTelat
+    @field(resolver: "App\\GraphQL\\PenguranganTelat\\Mutations\\PenguranganTelatMutation@forceDelete")
+}

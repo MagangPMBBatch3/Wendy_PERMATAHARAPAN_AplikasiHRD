@@ -1,0 +1,64 @@
+type Staff {
+    id: ID!
+    user_id: ID!
+    level_id: ID!
+    hire_date: Date
+    salary: Float
+    points: Int
+    created_at: DateTime
+    updated_at: DateTime
+    deleted_at: DateTime
+    user: User
+    level: Level
+    kinerjas: [Kinerja!]!
+    absensis: [Absensi!]!
+    payrolls: [Payroll!]!
+    total_points: Int
+}
+
+input CreateStaffInput {
+    user_id: ID!
+    level_id: ID!
+    hire_date: Date
+    salary: Float
+    points: Int
+}
+
+input UpdateStaffInput {
+    user_id: ID
+    level_id: ID
+    hire_date: Date
+    salary: Float
+    points: Int
+}
+
+extend type Query {
+    # ambil semua staff (yg blm hapus)
+    allStaff: [Staff!]!
+    @all(model: "App\\Models\\Staff")
+
+    # cari berdasarkan id
+    staff(id: ID! @eq(key: "id")): Staff
+    @find(model: "App\\Models\\Staff")
+
+    # cari berdasarkan user name (like)
+    staffByUserName(name: String! @where(operator: "like", key: "user.name")): [Staff!]!
+    @all(model: "App\\Models\\Staff")
+}
+
+extend type Mutation {
+    createStaff(input: CreateStaffInput! @spread): Staff @create(model: "App\\Models\\Staff")
+
+    updateStaff(id: ID! @eq(key: "id"),
+    input: UpdateStaffInput! @spread): Staff
+    @update(model: "App\\Models\\Staff")
+
+    deleteStaff(id: ID! @eq(key: "id")): Staff
+    @delete(model: "App\\Models\\Staff")
+
+    restoreStaff(id: ID!): Staff
+    @field(resolver: "App\\GraphQL\\Staff\\Mutations\\StaffMutation@restore")
+
+    forceDeleteStaff(id: ID!): Staff
+    @field(resolver: "App\\GraphQL\\Staff\\Mutations\\StaffMutation@forceDelete")
+}

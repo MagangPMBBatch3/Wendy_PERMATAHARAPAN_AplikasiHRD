@@ -1,0 +1,65 @@
+type Payroll {
+    id: ID!
+    staff_id: ID!
+    month: Int
+    year: Int
+    base_salary: Float
+    bonuses: Float
+    deductions: Float
+    total: Float
+    created_at: DateTime
+    updated_at: DateTime
+    deleted_at: DateTime
+    staff: Staff
+}
+
+input CreatePayrollInput {
+    staff_id: ID!
+    month: Int
+    year: Int
+    base_salary: Float
+    bonuses: Float
+    deductions: Float
+    total: Float
+}
+
+input UpdatePayrollInput {
+    staff_id: ID
+    month: Int
+    year: Int
+    base_salary: Float
+    bonuses: Float
+    deductions: Float
+    total: Float
+}
+
+extend type Query {
+    # ambil semua payroll (yg blm hapus)
+    allPayroll: [Payroll!]!
+    @all(model: "App\\Models\\Payroll")
+
+    # cari berdasarkan id
+    payroll(id: ID! @eq(key: "id")): Payroll
+    @find(model: "App\\Models\\Payroll")
+
+    # cari berdasarkan staff_id
+    payrollByStaffId(staff_id: ID! @eq(key: "staff_id")): [Payroll!]!
+    @all(model: "App\\Models\\Payroll")
+}
+
+extend type Mutation {
+    createPayroll(input: CreatePayrollInput! @spread): Payroll @create(model: "App\\Models\\Payroll")
+
+    updatePayroll(id: ID! @eq(key: "id"),
+    input: UpdatePayrollInput! @spread): Payroll
+    @update(model: "App\\Models\\Payroll")
+
+    deletePayroll(id: ID! @eq(key: "id")): Payroll
+    @delete(model: "App\\Models\\Payroll")
+
+    restorePayroll(id: ID!): Payroll
+    @field(resolver: "App\\GraphQL\\Payroll\\Mutations\\PayrollMutation@restore")
+
+    forceDeletePayroll(id: ID!): Payroll
+    @field(resolver: "App\\GraphQL\\Payroll\\Mutations\\PayrollMutation@forceDelete")
+}

@@ -1,0 +1,69 @@
+type Tunjangan {
+    id: ID!
+    staff_id: ID!
+    dt_payroll_id: ID!
+    tipe: String!
+    keterangan: String!
+    jumlah: Float!
+    tanggal: Date!
+    bulan: Int!
+    tahun: Int!
+    created_at: DateTime
+    updated_at: DateTime
+    deleted_at: DateTime
+    staff: Staff
+    detailPayroll: DetailPayroll
+}
+
+input CreateTunjanganInput {
+    staff_id: ID!
+    dt_payroll_id: ID!
+    tipe: String!
+    keterangan: String!
+    jumlah: Float!
+    tanggal: Date!
+    bulan: Int!
+    tahun: Int!
+}
+
+input UpdateTunjanganInput {
+    staff_id: ID
+    dt_payroll_id: ID
+    tipe: String
+    keterangan: String
+    jumlah: Float
+    tanggal: Date
+    bulan: Int
+    tahun: Int
+}
+
+extend type Query {
+    # ambil semua tunjangan (yg blm hapus)
+    allTunjangan: [Tunjangan!]!
+    @all(model: "App\\Models\\Tunjangan")
+
+    # cari berdasarkan id
+    tunjangan(id: ID! @eq(key: "id")): Tunjangan
+    @find(model: "App\\Models\\Tunjangan")
+
+    # cari berdasarkan staff_id
+    tunjanganByStaffId(staff_id: ID! @eq(key: "staff_id")): [Tunjangan!]!
+    @all(model: "App\\Models\\Tunjangan")
+}
+
+extend type Mutation {
+    createTunjangan(input: CreateTunjanganInput! @spread): Tunjangan @create(model: "App\\Models\\Tunjangan")
+
+    updateTunjangan(id: ID! @eq(key: "id"),
+    input: UpdateTunjanganInput! @spread): Tunjangan
+    @update(model: "App\\Models\\Tunjangan")
+
+    deleteTunjangan(id: ID! @eq(key: "id")): Tunjangan
+    @delete(model: "App\\Models\\Tunjangan")
+
+    restoreTunjangan(id: ID!): Tunjangan
+    @field(resolver: "App\\GraphQL\\Tunjangan\\Mutations\\TunjanganMutation@restore")
+
+    forceDeleteTunjangan(id: ID!): Tunjangan
+    @field(resolver: "App\\GraphQL\\Tunjangan\\Mutations\\TunjanganMutation@forceDelete")
+}

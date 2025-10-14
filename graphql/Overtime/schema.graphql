@@ -1,0 +1,76 @@
+type Overtime {
+    id: ID!
+    staff_id: ID!
+    proyek_id: ID!
+    dt_payroll_id: ID!
+    keterangan: String!
+    tanggal: Date!
+    waktu_mulai: DateTime!
+    waktu_selesai: DateTime!
+    durasi_jam: Float!
+    foto: String
+    status: String!
+    created_at: DateTime
+    updated_at: DateTime
+    deleted_at: DateTime
+    staff: Staff
+    proyek: Proyek
+    detailPayroll: DetailPayroll
+}
+
+input CreateOvertimeInput {
+    staff_id: ID!
+    proyek_id: ID!
+    dt_payroll_id: ID!
+    keterangan: String!
+    tanggal: Date!
+    waktu_mulai: DateTime!
+    waktu_selesai: DateTime!
+    durasi_jam: Float!
+    foto: String
+    status: String
+}
+
+input UpdateOvertimeInput {
+    staff_id: ID
+    proyek_id: ID
+    dt_payroll_id: ID
+    keterangan: String
+    tanggal: Date
+    waktu_mulai: DateTime
+    waktu_selesai: DateTime
+    durasi_jam: Float
+    foto: String
+    status: String
+}
+
+extend type Query {
+    # ambil semua overtime (yg blm hapus)
+    allOvertime: [Overtime!]!
+    @all(model: "App\\Models\\Overtime")
+
+    # cari berdasarkan id
+    overtime(id: ID! @eq(key: "id")): Overtime
+    @find(model: "App\\Models\\Overtime")
+
+    # cari berdasarkan staff_id
+    overtimeByStaffId(staff_id: ID! @eq(key: "staff_id")): [Overtime!]!
+    @all(model: "App\\Models\\Overtime")
+}
+
+extend type Mutation {
+    createOvertime(input: CreateOvertimeInput! @spread): Overtime @create(model: "App\\Models\\Overtime")
+
+    updateOvertime(id: ID! @eq(key: "id"),
+    input: UpdateOvertimeInput! @spread): Overtime
+    @update(model: "App\\Models\\Overtime")
+
+    deleteOvertime(id: ID! @eq(key: "id")): Overtime
+    @delete(model: "App\\Models\\Overtime")
+
+    restoreOvertime(id: ID!): Overtime
+    @field(resolver: "App\\GraphQL\\Overtime\\Mutations\\OvertimeMutation@restore")
+
+    forceDeleteOvertime(id: ID!): Overtime
+    @field(resolver: "App\\GraphQL\\Overtime\\Mutations\\OvertimeMutation@forceDelete")
+}

@@ -1,0 +1,60 @@
+type Pengurangan {
+    id: ID!
+    staff_id: ID!
+    dt_payroll_id: ID!
+    keterangan: String!
+    jumlah: Float!
+    tanggal: Date!
+    created_at: DateTime
+    updated_at: DateTime
+    deleted_at: DateTime
+    staff: Staff
+    detailPayroll: DetailPayroll
+}
+
+input CreatePenguranganInput {
+    staff_id: ID!
+    dt_payroll_id: ID!
+    keterangan: String!
+    jumlah: Float!
+    tanggal: Date!
+}
+
+input UpdatePenguranganInput {
+    staff_id: ID
+    dt_payroll_id: ID
+    keterangan: String
+    jumlah: Float
+    tanggal: Date
+}
+
+extend type Query {
+    # ambil semua pengurangan (yg blm hapus)
+    allPengurangan: [Pengurangan!]!
+    @all(model: "App\\Models\\Pengurangan")
+
+    # cari berdasarkan id
+    pengurangan(id: ID! @eq(key: "id")): Pengurangan
+    @find(model: "App\\Models\\Pengurangan")
+
+    # cari berdasarkan staff_id
+    penguranganByStaffId(staff_id: ID! @eq(key: "staff_id")): [Pengurangan!]!
+    @all(model: "App\\Models\\Pengurangan")
+}
+
+extend type Mutation {
+    createPengurangan(input: CreatePenguranganInput! @spread): Pengurangan @create(model: "App\\Models\\Pengurangan")
+
+    updatePengurangan(id: ID! @eq(key: "id"),
+    input: UpdatePenguranganInput! @spread): Pengurangan
+    @update(model: "App\\Models\\Pengurangan")
+
+    deletePengurangan(id: ID! @eq(key: "id")): Pengurangan
+    @delete(model: "App\\Models\\Pengurangan")
+
+    restorePengurangan(id: ID!): Pengurangan
+    @field(resolver: "App\\GraphQL\\Pengurangan\\Mutations\\PenguranganMutation@restore")
+
+    forceDeletePengurangan(id: ID!): Pengurangan
+    @field(resolver: "App\\GraphQL\\Pengurangan\\Mutations\\PenguranganMutation@forceDelete")
+}

@@ -1,0 +1,69 @@
+type DetailPayroll {
+    id: ID!
+    payroll_id: ID!
+    staff_id: ID!
+    lembur: Float!
+    bonus: Float!
+    pengurangan: Float!
+    total_gaji: Float!
+    tanggal: Date!
+    keterangan: String
+    created_at: DateTime
+    updated_at: DateTime
+    deleted_at: DateTime
+    payroll: Payroll
+    staff: Staff
+}
+
+input CreateDetailPayrollInput {
+    payroll_id: ID!
+    staff_id: ID!
+    lembur: Float!
+    bonus: Float!
+    pengurangan: Float!
+    total_gaji: Float!
+    tanggal: Date!
+    keterangan: String
+}
+
+input UpdateDetailPayrollInput {
+    payroll_id: ID
+    staff_id: ID
+    lembur: Float
+    bonus: Float
+    pengurangan: Float
+    total_gaji: Float
+    tanggal: Date
+    keterangan: String
+}
+
+extend type Query {
+    # ambil semua detail payroll (yg blm hapus)
+    allDetailPayroll: [DetailPayroll!]!
+    @all(model: "App\\Models\\DetailPayroll")
+
+    # cari berdasarkan id
+    detailPayroll(id: ID! @eq(key: "id")): DetailPayroll
+    @find(model: "App\\Models\\DetailPayroll")
+
+    # cari berdasarkan staff_id
+    detailPayrollByStaffId(staff_id: ID! @eq(key: "staff_id")): [DetailPayroll!]!
+    @all(model: "App\\Models\\DetailPayroll")
+}
+
+extend type Mutation {
+    createDetailPayroll(input: CreateDetailPayrollInput! @spread): DetailPayroll @create(model: "App\\Models\\DetailPayroll")
+
+    updateDetailPayroll(id: ID! @eq(key: "id"),
+    input: UpdateDetailPayrollInput! @spread): DetailPayroll
+    @update(model: "App\\Models\\DetailPayroll")
+
+    deleteDetailPayroll(id: ID! @eq(key: "id")): DetailPayroll
+    @delete(model: "App\\Models\\DetailPayroll")
+
+    restoreDetailPayroll(id: ID!): DetailPayroll
+    @field(resolver: "App\\GraphQL\\DetailPayroll\\Mutations\\DetailPayrollMutation@restore")
+
+    forceDeleteDetailPayroll(id: ID!): DetailPayroll
+    @field(resolver: "App\\GraphQL\\DetailPayroll\\Mutations\\DetailPayrollMutation@forceDelete")
+}

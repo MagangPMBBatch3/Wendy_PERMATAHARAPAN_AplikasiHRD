@@ -1,0 +1,59 @@
+type Absensi {
+    id: ID!
+    staff_id: ID!
+    login_time: DateTime
+    logout_time: DateTime
+    date: Date
+    status: String
+    created_at: DateTime
+    updated_at: DateTime
+    deleted_at: DateTime
+    staff: Staff
+}
+
+input CreateAbsensiInput {
+    staff_id: ID!
+    login_time: DateTime
+    logout_time: DateTime
+    date: Date
+    status: String
+}
+
+input UpdateAbsensiInput {
+    staff_id: ID
+    login_time: DateTime
+    logout_time: DateTime
+    date: Date
+    status: String
+}
+
+extend type Query {
+    # ambil semua absensi (yg blm hapus)
+    allAbsensi: [Absensi!]!
+    @all(model: "App\\Models\\Absensi")
+
+    # cari berdasarkan id
+    absensi(id: ID! @eq(key: "id")): Absensi
+    @find(model: "App\\Models\\Absensi")
+
+    # cari berdasarkan staff_id
+    absensiByStaffId(staff_id: ID! @eq(key: "staff_id")): [Absensi!]!
+    @all(model: "App\\Models\\Absensi")
+}
+
+extend type Mutation {
+    createAbsensi(input: CreateAbsensiInput! @spread): Absensi @create(model: "App\\Models\\Absensi")
+
+    updateAbsensi(id: ID! @eq(key: "id"),
+    input: UpdateAbsensiInput! @spread): Absensi
+    @update(model: "App\\Models\\Absensi")
+
+    deleteAbsensi(id: ID! @eq(key: "id")): Absensi
+    @delete(model: "App\\Models\\Absensi")
+
+    restoreAbsensi(id: ID!): Absensi
+    @field(resolver: "App\\GraphQL\\Absensi\\Mutations\\AbsensiMutation@restore")
+
+    forceDeleteAbsensi(id: ID!): Absensi
+    @field(resolver: "App\\GraphQL\\Absensi\\Mutations\\AbsensiMutation@forceDelete")
+}

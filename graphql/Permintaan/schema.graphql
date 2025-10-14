@@ -1,0 +1,62 @@
+type Permintaan {
+    id: ID!
+    staff_id: ID!
+    tipe: String!
+    keterangan: String!
+    tanggal: Date!
+    waktu_mulai: DateTime
+    waktu_selesai: DateTime
+    created_at: DateTime
+    updated_at: DateTime
+    deleted_at: DateTime
+    staff: Staff
+}
+
+input CreatePermintaanInput {
+    staff_id: ID!
+    tipe: String!
+    keterangan: String!
+    tanggal: Date!
+    waktu_mulai: DateTime
+    waktu_selesai: DateTime
+}
+
+input UpdatePermintaanInput {
+    staff_id: ID
+    tipe: String
+    keterangan: String
+    tanggal: Date
+    waktu_mulai: DateTime
+    waktu_selesai: DateTime
+}
+
+extend type Query {
+    # ambil semua permintaan (yg blm hapus)
+    allPermintaan: [Permintaan!]!
+    @all(model: "App\\Models\\Permintaan")
+
+    # cari berdasarkan id
+    permintaan(id: ID! @eq(key: "id")): Permintaan
+    @find(model: "App\\Models\\Permintaan")
+
+    # cari berdasarkan staff_id
+    permintaanByStaffId(staff_id: ID! @eq(key: "staff_id")): [Permintaan!]!
+    @all(model: "App\\Models\\Permintaan")
+}
+
+extend type Mutation {
+    createPermintaan(input: CreatePermintaanInput! @spread): Permintaan @create(model: "App\\Models\\Permintaan")
+
+    updatePermintaan(id: ID! @eq(key: "id"),
+    input: UpdatePermintaanInput! @spread): Permintaan
+    @update(model: "App\\Models\\Permintaan")
+
+    deletePermintaan(id: ID! @eq(key: "id")): Permintaan
+    @delete(model: "App\\Models\\Permintaan")
+
+    restorePermintaan(id: ID!): Permintaan
+    @field(resolver: "App\\GraphQL\\Permintaan\\Mutations\\PermintaanMutation@restore")
+
+    forceDeletePermintaan(id: ID!): Permintaan
+    @field(resolver: "App\\GraphQL\\Permintaan\\Mutations\\PermintaanMutation@forceDelete")
+}

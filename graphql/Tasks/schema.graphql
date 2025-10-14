@@ -1,0 +1,83 @@
+type Tasks {
+    id: ID!
+    creator_id: ID
+    assignee_id: ID
+    proyek_id: ID
+    title: String!
+    description: String
+    due_date: Date
+    start_at: DateTime
+    end_at: DateTime
+    priority: String!
+    status: String!
+    attachment: String
+    created_at: DateTime
+    updated_at: DateTime
+    deleted_at: DateTime
+    creator: Staff
+    assignee: Staff
+    proyek: Proyek
+}
+
+input CreateTasksInput {
+    creator_id: ID
+    assignee_id: ID
+    proyek_id: ID
+    title: String!
+    description: String
+    due_date: Date
+    start_at: DateTime
+    end_at: DateTime
+    priority: String!
+    status: String!
+    attachment: String
+}
+
+input UpdateTasksInput {
+    creator_id: ID
+    assignee_id: ID
+    proyek_id: ID
+    title: String
+    description: String
+    due_date: Date
+    start_at: DateTime
+    end_at: DateTime
+    priority: String
+    status: String
+    attachment: String
+}
+
+extend type Query {
+    # ambil semua tasks (yg blm hapus)
+    allTasks: [Tasks!]!
+    @all(model: "App\\Models\\Tasks")
+
+    # cari berdasarkan id
+    tasks(id: ID! @eq(key: "id")): Tasks
+    @find(model: "App\\Models\\Tasks")
+
+    # cari berdasarkan assignee_id
+    tasksByAssigneeId(assignee_id: ID! @eq(key: "assignee_id")): [Tasks!]!
+    @all(model: "App\\Models\\Tasks")
+
+    # cari berdasarkan creator_id
+    tasksByCreatorId(creator_id: ID! @eq(key: "creator_id")): [Tasks!]!
+    @all(model: "App\\Models\\Tasks")
+}
+
+extend type Mutation {
+    createTasks(input: CreateTasksInput! @spread): Tasks @create(model: "App\\Models\\Tasks")
+
+    updateTasks(id: ID! @eq(key: "id"),
+    input: UpdateTasksInput! @spread): Tasks
+    @update(model: "App\\Models\\Tasks")
+
+    deleteTasks(id: ID! @eq(key: "id")): Tasks
+    @delete(model: "App\\Models\\Tasks")
+
+    restoreTasks(id: ID!): Tasks
+    @field(resolver: "App\\GraphQL\\Tasks\\Mutations\\TasksMutation@restore")
+
+    forceDeleteTasks(id: ID!): Tasks
+    @field(resolver: "App\\GraphQL\\Tasks\\Mutations\\TasksMutation@forceDelete")
+}

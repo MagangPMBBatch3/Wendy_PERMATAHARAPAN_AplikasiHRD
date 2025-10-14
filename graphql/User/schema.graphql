@@ -1,0 +1,80 @@
+type User {
+    id: ID!
+    name: String!
+    email: String!
+    email_verified_at: DateTime
+    created_at: DateTime
+    updated_at: DateTime
+    deleted_at: DateTime
+}
+
+input CreateUserInput {
+    name: String!
+    email: String!
+    password: String!
+}
+
+input UpdateUserInput {
+    name: String
+    email: String
+    password: String
+    email_verified_at: DateTime
+}
+
+
+type PageInfo {
+    hasMorePages: Boolean!
+    currentPage: Int!
+    lastPage: Int!
+    perPage: Int!
+    total: Int!
+}
+
+type BagianPaginator {
+    data: [Bagian!]!
+    paginatorInfo: PageInfo!
+
+}
+
+extend type Query {
+    # ambil semua user (yang belum dihapus)
+    allUser: [User!]!
+    @all(model: "App\\Models\\User")
+
+#QUery dengan paginasi dan search
+    allUserPaginate(
+       search: String
+       first: Int
+       page: Int
+    ): UserPaginator!
+    @field(resolver: "App\\GraphQL\\Queries\\UserQuery@all")
+    # cari berdasarkan id
+    user(id: ID! @eq(key: "id")): User
+    @find(model: "App\\Models\\User")
+
+    # cari berdasarkan email (like)
+    userByEmail(email: String! @where(operator: "like", key: "email")): [User!]!
+    @all(model: "App\\Models\\User")
+}
+
+extend type Mutation {
+    # tambah data
+    createUser(input: CreateUserInput! @spread): User
+    @create(model: "App\\Models\\User")
+
+    # ubah data
+    updateUser(
+        id: ID! @eq(key: "id"),
+        input: UpdateUserInput! @spread
+        ): User
+    @update(model: "App\\Models\\User")
+
+    deleteUser(id: ID! @eq(key: "id")): User
+    @delete(model: "App\\Models\\User")
+
+    restoreUser(id: ID!): User
+    @field(resolver: "App\\GraphQL\\User\\Mutations\\UserMutation@restore")
+
+    forceDeleteUser(id: ID!): User
+    @field(resolver: "App\\GraphQL\\User\\Mutations\\UserMutation@forceDelete")
+}

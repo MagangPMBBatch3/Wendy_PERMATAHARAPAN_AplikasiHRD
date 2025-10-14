@@ -1,0 +1,60 @@
+type Kinerja {
+    id: ID!
+    staff_id: ID!
+    proyek_id: ID!
+    points: Int
+    description: String
+    date: Date
+    created_at: DateTime
+    updated_at: DateTime
+    deleted_at: DateTime
+    staff: Staff
+    proyek: Proyek
+}
+
+input CreateKinerjaInput {
+    staff_id: ID!
+    proyek_id: ID!
+    points: Int
+    description: String
+    date: Date
+}
+
+input UpdateKinerjaInput {
+    staff_id: ID
+    proyek_id: ID
+    points: Int
+    description: String
+    date: Date
+}
+
+extend type Query {
+    # ambil semua kinerja (yg blm hapus)
+    allKinerja: [Kinerja!]!
+    @all(model: "App\\Models\\Kinerja")
+
+    # cari berdasarkan id
+    kinerja(id: ID! @eq(key: "id")): Kinerja
+    @find(model: "App\\Models\\Kinerja")
+
+    # cari berdasarkan staff_id
+    kinerjaByStaffId(staff_id: ID! @eq(key: "staff_id")): [Kinerja!]!
+    @all(model: "App\\Models\\Kinerja")
+}
+
+extend type Mutation {
+    createKinerja(input: CreateKinerjaInput! @spread): Kinerja @create(model: "App\\Models\\Kinerja")
+
+    updateKinerja(id: ID! @eq(key: "id"),
+    input: UpdateKinerjaInput! @spread): Kinerja
+    @update(model: "App\\Models\\Kinerja")
+
+    deleteKinerja(id: ID! @eq(key: "id")): Kinerja
+    @delete(model: "App\\Models\\Kinerja")
+
+    restoreKinerja(id: ID!): Kinerja
+    @field(resolver: "App\\GraphQL\\Kinerja\\Mutations\\KinerjaMutation@restore")
+
+    forceDeleteKinerja(id: ID!): Kinerja
+    @field(resolver: "App\\GraphQL\\Kinerja\\Mutations\\KinerjaMutation@forceDelete")
+}

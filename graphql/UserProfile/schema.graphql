@@ -1,0 +1,67 @@
+type UserProfile {
+    id: ID!
+    user_id: ID!
+    staff_id: ID!
+    nama_lengkap: String!
+    nrp: String
+    alamat: String
+    foto: String
+    created_at: DateTime
+    updated_at: DateTime
+    deleted_at: DateTime
+    user: User
+    staff: Staff
+}
+
+input CreateUserProfileInput {
+    user_id: ID!
+    staff_id: ID!
+    nama_lengkap: String!
+    nrp: String
+    alamat: String
+    foto: String
+}
+
+input UpdateUserProfileInput {
+    user_id: ID
+    staff_id: ID
+    nama_lengkap: String
+    nrp: String
+    alamat: String
+    foto: String
+}
+
+extend type Query {
+    # ambil semua user profile (yg blm hapus)
+    allUserProfile: [UserProfile!]!
+    @all(model: "App\\Models\\UserProfile")
+
+    # cari berdasarkan id
+    userProfile(id: ID! @eq(key: "id")): UserProfile
+    @find(model: "App\\Models\\UserProfile")
+
+    # cari berdasarkan user_id
+    userProfileByUserId(user_id: ID! @eq(key: "user_id")): [UserProfile!]!
+    @all(model: "App\\Models\\UserProfile")
+
+    # cari berdasarkan staff_id
+    userProfileByStaffId(staff_id: ID! @eq(key: "staff_id")): [UserProfile!]!
+    @all(model: "App\\Models\\UserProfile")
+}
+
+extend type Mutation {
+    createUserProfile(input: CreateUserProfileInput! @spread): UserProfile @create(model: "App\\Models\\UserProfile")
+
+    updateUserProfile(id: ID! @eq(key: "id"),
+    input: UpdateUserProfileInput! @spread): UserProfile
+    @update(model: "App\\Models\\UserProfile")
+
+    deleteUserProfile(id: ID! @eq(key: "id")): UserProfile
+    @delete(model: "App\\Models\\UserProfile")
+
+    restoreUserProfile(id: ID!): UserProfile
+    @field(resolver: "App\\GraphQL\\UserProfile\\Mutations\\UserProfileMutation@restore")
+
+    forceDeleteUserProfile(id: ID!): UserProfile
+    @field(resolver: "App\\GraphQL\\UserProfile\\Mutations\\UserProfileMutation@forceDelete")
+}

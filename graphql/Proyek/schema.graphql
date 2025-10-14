@@ -1,0 +1,59 @@
+type Proyek {
+    id: ID!
+    name: String!
+    description: String
+    start_date: Date
+    end_date: Date
+    status: String
+    created_at: DateTime
+    updated_at: DateTime
+    deleted_at: DateTime
+    kinerjas: [Kinerja!]!
+}
+
+input CreateProyekInput {
+    name: String!
+    description: String
+    start_date: Date
+    end_date: Date
+    status: String
+}
+
+input UpdateProyekInput {
+    name: String
+    description: String
+    start_date: Date
+    end_date: Date
+    status: String
+}
+
+extend type Query {
+    # ambil semua proyek (yg blm hapus)
+    allProyek: [Proyek!]!
+    @all(model: "App\\Models\\Proyek")
+
+    # cari berdasarkan id
+    proyek(id: ID! @eq(key: "id")): Proyek
+    @find(model: "App\\Models\\Proyek")
+
+    # cari berdasarkan name (like)
+    proyekByName(name: String! @where(operator: "like", key: "name")): [Proyek!]!
+    @all(model: "App\\Models\\Proyek")
+}
+
+extend type Mutation {
+    createProyek(input: CreateProyekInput! @spread): Proyek @create(model: "App\\Models\\Proyek")
+
+    updateProyek(id: ID! @eq(key: "id"),
+    input: UpdateProyekInput! @spread): Proyek
+    @update(model: "App\\Models\\Proyek")
+
+    deleteProyek(id: ID! @eq(key: "id")): Proyek
+    @delete(model: "App\\Models\\Proyek")
+
+    restoreProyek(id: ID!): Proyek
+    @field(resolver: "App\\GraphQL\\Proyek\\Mutations\\ProyekMutation@restore")
+
+    forceDeleteProyek(id: ID!): Proyek
+    @field(resolver: "App\\GraphQL\\Proyek\\Mutations\\ProyekMutation@forceDelete")
+}
