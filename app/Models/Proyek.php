@@ -10,6 +10,8 @@ class Proyek extends Model
 {
     use HasFactory, SoftDeletes;
 
+    protected $table = 'proyek';
+
     protected $fillable = [
         'name',
         'description',

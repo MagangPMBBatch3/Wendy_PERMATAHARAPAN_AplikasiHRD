@@ -22,6 +22,11 @@ class RoleMiddleware
 
         $user = Auth::user();
 
+        // Superadmin has access to everything
+        if ($user->isSuperAdmin()) {
+            return $next($request);
+        }
+
         foreach ($roles as $role) {
             if ($user->role === $role) {
                 return $next($request);

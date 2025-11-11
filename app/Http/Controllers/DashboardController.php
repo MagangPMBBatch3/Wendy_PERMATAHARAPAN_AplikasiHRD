@@ -19,7 +19,7 @@ class DashboardController extends Controller
             'total_staff' => Staff::count(),
             'total_projects' => Proyek::count(),
             'total_tasks' => Tasks::count(),
-            'pending_payrolls' => Payroll::where('status', 'pending')->count(),
+            'pending_payrolls' => \DB::table('payroll')->where('status', 'pending')->count(),
             'user' => $user,
         ];
 
@@ -28,10 +28,10 @@ class DashboardController extends Controller
             if ($staff) {
                 $data['my_tasks'] = Tasks::where('assignee_id', $user->id)->count();
                 $data['my_projects'] = $staff->kinerjas()->distinct('proyek_id')->count();
-                $data['my_payrolls'] = Payroll::where('staff_id', $staff->id)->count();
+                $data['my_payrolls'] = \DB::table('payroll')->where('staff_id', $staff->id)->count();
             }
         }
 
-        return view('dashboard', $data);
+        return view('dashboard.index', $data);
     }
 }

@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Auth;
 
 class RegisterController extends Controller
 {
@@ -30,9 +31,9 @@ class RegisterController extends Controller
             'role' => $request->role,
         ]);
 
-        // Optionally log the user in after registration
-        // Auth::login($user);
+        // Log the user in after registration
+        Auth::login($user);
 
-        return redirect('/login')->with('success', 'Registration successful! Please login.');
+        return redirect()->route('dashboard')->with('success', 'Registration successful! Welcome to the HRD App.');
     }
 }

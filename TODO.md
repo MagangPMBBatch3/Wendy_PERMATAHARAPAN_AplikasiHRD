@@ -1,44 +1,84 @@
-# GraphQL Schema Creation Tasks
+# Frontend Development Tasks
 
-## Models
-- [x] Create app/Models/UserProfile.php
-- [x] Create app/Models/Permintaan.php
-- [x] Create app/Models/Pengurangan.php
-- [x] Create app/Models/Tunjangan.php
-- [x] Create app/Models/Overtime.php
-- [x] Create app/Models/Tasks.php
-- [x] Create app/Models/DetailPayroll.php
-- [x] Create app/Models/PenguranganTelat.php
+## Authentication
+- [x] Create auth/register.blade.php page with Tailwind CSS
+- [ ] Update layouts/navbar.blade.php with navigation links
+- [x] Update layouts/sidebar.blade.php with menu items for all modules
 
-## GraphQL Schemas
-- [x] Create graphql/UserProfile/schema.graphql
-- [x] Create graphql/Permintaan/schema.graphql
-- [x] Create graphql/Pengurangan/schema.graphql
-- [x] Create graphql/Tunjangan/schema.graphql
-- [x] Create graphql/Overtime/schema.graphql
-- [x] Create graphql/Tasks/schema.graphql
-- [x] Create graphql/DetailPayroll/schema.graphql
-- [x] Create graphql/PenguranganTelat/schema.graphql
+## UserProfile CRUD
+- [x] Create resources/views/userprofile/index.blade.php (list view)
+- [x] Create resources/views/userprofile/create.blade.php (create form)
+- [x] Create resources/views/userprofile/edit.blade.php (edit form)
+- [x] Create resources/views/userprofile/show.blade.php (detail view)
+- [x] Create public/js/UserProfile/userprofile.js (GraphQL API calls)
+- [x] Create public/js/UserProfile/userprofile-create.js
+- [x] Create public/js/UserProfile/userprofile-edit.js
 
-## GraphQL Queries
-- [x] Create app/GraphQL/UserProfile/Queries/UserProfileQuery.php
-- [x] Create app/GraphQL/Permintaan/Queries/PermintaanQuery.php
-- [x] Create app/GraphQL/Pengurangan/Queries/PenguranganQuery.php
-- [x] Create app/GraphQL/Tunjangan/Queries/TunjanganQuery.php
-- [x] Create app/GraphQL/Overtime/Queries/OvertimeQuery.php
-- [x] Create app/GraphQL/Tasks/Queries/TasksQuery.php
-- [x] Create app/GraphQL/DetailPayroll/Queries/DetailPayrollQuery.php
-- [x] Create app/GraphQL/PenguranganTelat/Queries/PenguranganTelatQuery.php
+## Permintaan CRUD
+- [x] Create resources/views/permintaan/index.blade.php
+- [x] Create resources/views/permintaan/create.blade.php
+- [x] Create resources/views/permintaan/edit.blade.php
+- [x] Create resources/views/permintaan/show.blade.php
+- [x] Create public/js/Permintaan/permintaan.js
+- [x] Create public/js/Permintaan/permintaan-create.js
+- [x] Create public/js/Permintaan/permintaan-edit.js
 
-## GraphQL Mutations
-- [x] Create app/GraphQL/UserProfile/Mutations/UserProfileMutation.php
-- [x] Create app/GraphQL/Permintaan/Mutations/PermintaanMutation.php
-- [x] Create app/GraphQL/Pengurangan/Mutations/PenguranganMutation.php
-- [x] Create app/GraphQL/Tunjangan/Mutations/TunjanganMutation.php
-- [x] Create app/GraphQL/Overtime/Mutations/OvertimeMutation.php
-- [x] Create app/GraphQL/Tasks/Mutations/TasksMutation.php
-- [x] Create app/GraphQL/DetailPayroll/Mutations/DetailPayrollMutation.php
-- [x] Create app/GraphQL/PenguranganTelat/Mutations/PenguranganTelatMutation.php
+## Pengurangan CRUD
+- [x] Create resources/views/pengurangan/index.blade.php
+- [x] Create resources/views/pengurangan/create.blade.php
+- [x] Create resources/views/pengurangan/edit.blade.php
+- [x] Create resources/views/pengurangan/show.blade.php
+- [x] Create public/js/Pengurangan/pengurangan.js
+- [x] Create public/js/Pengurangan/pengurangan-create.js
+- [x] Create public/js/Pengurangan/pengurangan-edit.js
 
-## Update Main Schema
-- [x] Update graphql/schema.graphql to import all new schemas
+## Tunjangan CRUD
+- [x] Create resources/views/tunjangan/index.blade.php
+- [x] Create resources/views/tunjangan/create.blade.php
+- [x] Create resources/views/tunjangan/edit.blade.php
+- [x] Create resources/views/tunjangan/show.blade.php
+- [x] Create public/js/Tunjangan/tunjangan.js
+- [x] Create public/js/Tunjangan/tunjangan-create.js
+- [x] Create public/js/Tunjangan/tunjangan-edit.js
+
+## Overtime CRUD
+- [x] Create resources/views/overtime/index.blade.php
+- [x] Create resources/views/overtime/create.blade.php
+- [x] Create resources/views/overtime/edit.blade.php
+- [x] Create resources/views/overtime/show.blade.php
+- [x] Create public/js/Overtime/overtime.js
+- [x] Create public/js/Overtime/overtime-create.js
+- [x] Create public/js/Overtime/overtime-edit.js
+
+## Tasks CRUD
+- [x] Create resources/views/tasks/index.blade.php
+- [x] Create resources/views/tasks/create.blade.php
+- [x] Create resources/views/tasks/edit.blade.php
+- [x] Create resources/views/tasks/show.blade.php
+- [x] Create public/js/Tasks/tasks.js
+- [x] Create public/js/Tasks/tasks-create.js
+- [x] Create public/js/Tasks/tasks-edit.js
+
+## DetailPayroll CRUD
+- [ ] Create resources/views/detailpayroll/index.blade.php
+- [ ] Create resources/views/detailpayroll/create.blade.php
+- [ ] Create resources/views/detailpayroll/edit.blade.php
+- [ ] Create resources/views/detailpayroll/show.blade.php
+- [ ] Create public/js/DetailPayroll/detailpayroll.js
+- [ ] Create public/js/DetailPayroll/detailpayroll-create.js
+- [ ] Create public/js/DetailPayroll/detailpayroll-edit.js
+
+## PenguranganTelat CRUD
+- [ ] Create resources/views/pengurangantelat/index.blade.php
+- [ ] Create resources/views/pengurangantelat/create.blade.php
+- [ ] Create resources/views/pengurangantelat/edit.blade.php
+- [ ] Create resources/views/pengurangantelat/show.blade.php
+- [ ] Create public/js/PenguranganTelat/pengurangantelat.js
+- [ ] Create public/js/PenguranganTelat/pengurangantelat-create.js
+- [ ] Create public/js/PenguranganTelat/pengurangantelat-edit.js
+
+## Testing & Polish
+- [ ] Test all CRUD operations with GraphQL backend
+- [ ] Ensure responsive design on mobile devices
+- [ ] Add loading states and error handling
+- [ ] Polish UI/UX with consistent styling

@@ -8,6 +8,22 @@
             </div>
 
             <div class="flex items-center space-x-4">
+                <!-- Navigation Links for Admin/SuperAdmin -->
+                @if(Auth::user()->isAdmin() || Auth::user()->isSuperAdmin())
+                <div class="hidden md:flex items-center space-x-4">
+                    <a href="{{ route('dashboard') }}" class="text-gray-700 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium {{ request()->routeIs('dashboard') ? 'bg-gray-100' : '' }}">Dashboard</a>
+                    <a href="{{ route('userprofile.index') }}" class="text-gray-700 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium {{ request()->routeIs('userprofile.*') ? 'bg-gray-100' : '' }}">User Profiles</a>
+                    <a href="{{ route('tasks.index') }}" class="text-gray-700 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium {{ request()->routeIs('tasks.*') ? 'bg-gray-100' : '' }}">Tasks</a>
+                    <a href="{{ route('permintaan.index') }}" class="text-gray-700 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium {{ request()->routeIs('permintaan.*') ? 'bg-gray-100' : '' }}">Permintaan</a>
+                    {{-- TODO: Add remaining table links when implemented --}}
+                    <a href="{{ route('pengurangan.index') }}" class="text-gray-700 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium {{ request()->routeIs('pengurangan.*') ? 'bg-gray-100' : '' }}">Pengurangan</a>
+                    <a href="{{ route('tunjangan.index') }}" class="text-gray-700 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium {{ request()->routeIs('tunjangan.*') ? 'bg-gray-100' : '' }}">Tunjangan</a>
+                    <a href="{{ route('overtime.index') }}" class="text-gray-700 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium {{ request()->routeIs('overtime.*') ? 'bg-gray-100' : '' }}">Overtime</a>
+                    <a href="{{ route('detailpayroll.index') }}" class="text-gray-700 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium {{ request()->routeIs('detailpayroll.*') ? 'bg-gray-100' : '' }}">Detail Payroll</a>
+                    <a href="{{ route('pengurangantelat.index') }}" class="text-gray-700 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium {{ request()->routeIs('pengurangantelat.*') ? 'bg-gray-100' : '' }}">Pengurangan Telat</a> 
+                </div>
+                @endif
+
                 <!-- User Menu -->
                 <div class="relative" x-data="{ open: false }">
                     <button @click="open = !open" class="flex items-center space-x-2 text-gray-700 hover:text-gray-900 focus:outline-none">
