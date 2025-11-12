@@ -35,7 +35,9 @@
                 <label for="staff_id" class="block text-sm font-medium text-gray-700">Staff <span class="text-red-500">*</span></label>
                 <select id="staff_id" name="staff_id" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
                     <option value="">Select staff</option>
-                    <!-- Staff will be loaded here -->
+                    @foreach($staffs as $staff)
+                        <option value="{{ $staff->id }}" {{ $pengurangan->staff_id == $staff->id ? 'selected' : '' }}>{{ $staff->nama }}</option>
+                    @endforeach
                 </select>
                 <p class="mt-1 text-sm text-gray-500">Select the staff member for this deduction</p>
             </div>
@@ -45,7 +47,9 @@
                 <label for="dt_payroll_id" class="block text-sm font-medium text-gray-700">Payroll Period <span class="text-red-500">*</span></label>
                 <select id="dt_payroll_id" name="dt_payroll_id" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
                     <option value="">Select payroll period</option>
-                    <!-- Payroll periods will be loaded here -->
+                    @foreach($detailPayrolls as $detailPayroll)
+                        <option value="{{ $detailPayroll->id }}" {{ $pengurangan->dt_payroll_id == $detailPayroll->id ? 'selected' : '' }}>{{ $detailPayroll->periode }}</option>
+                    @endforeach
                 </select>
                 <p class="mt-1 text-sm text-gray-500">Select the payroll period for this deduction</p>
             </div>
@@ -53,7 +57,7 @@
             <!-- Date -->
             <div>
                 <label for="tanggal" class="block text-sm font-medium text-gray-700">Date <span class="text-red-500">*</span></label>
-                <input type="date" id="tanggal" name="tanggal" required
+                <input type="date" id="tanggal" name="tanggal" value="{{ $pengurangan->tanggal }}" required
                        class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500">
                 <p class="mt-1 text-sm text-gray-500">Date of the deduction</p>
             </div>
@@ -65,7 +69,7 @@
                     <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                         <span class="text-gray-500 sm:text-sm">Rp</span>
                     </div>
-                    <input type="number" id="jumlah" name="jumlah" step="0.01" min="0" required
+                    <input type="number" id="jumlah" name="jumlah" step="0.01" min="0" value="{{ $pengurangan->jumlah }}" required
                            class="pl-12 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                            placeholder="0.00">
                 </div>
@@ -77,7 +81,7 @@
                 <label for="keterangan" class="block text-sm font-medium text-gray-700">Description <span class="text-red-500">*</span></label>
                 <textarea id="keterangan" name="keterangan" rows="4" required
                           class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-                          placeholder="Provide details about this deduction..."></textarea>
+                          placeholder="Provide details about this deduction...">{{ $pengurangan->keterangan }}</textarea>
                 <p class="mt-1 text-sm text-gray-500">Detailed description of the deduction</p>
             </div>
 

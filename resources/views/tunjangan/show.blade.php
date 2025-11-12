@@ -33,31 +33,31 @@
                 <!-- Type -->
                 <div>
                     <label class="block text-sm font-medium text-gray-700">Type</label>
-                    <p id="allowanceType" class="mt-1 text-sm text-gray-900 bg-gray-50 px-3 py-2 rounded-md">Loading...</p>
+                    <p class="mt-1 text-sm text-gray-900 bg-gray-50 px-3 py-2 rounded-md">{{ $tunjangan->jenis ?? 'N/A' }}</p>
                 </div>
 
                 <!-- Date -->
                 <div>
                     <label class="block text-sm font-medium text-gray-700">Date</label>
-                    <p id="allowanceDate" class="mt-1 text-sm text-gray-900 bg-gray-50 px-3 py-2 rounded-md">Loading...</p>
+                    <p class="mt-1 text-sm text-gray-900 bg-gray-50 px-3 py-2 rounded-md">{{ \Carbon\Carbon::parse($tunjangan->tanggal)->format('M d, Y') }}</p>
                 </div>
 
                 <!-- Period -->
                 <div>
                     <label class="block text-sm font-medium text-gray-700">Period</label>
-                    <p id="allowancePeriod" class="mt-1 text-sm text-gray-900 bg-gray-50 px-3 py-2 rounded-md">Loading...</p>
+                    <p class="mt-1 text-sm text-gray-900 bg-gray-50 px-3 py-2 rounded-md">{{ $tunjangan->periode ?? 'N/A' }}</p>
                 </div>
 
                 <!-- Amount -->
                 <div>
                     <label class="block text-sm font-medium text-gray-700">Amount</label>
-                    <p id="allowanceAmount" class="mt-1 text-sm text-gray-900 bg-gray-50 px-3 py-2 rounded-md">Loading...</p>
+                    <p class="mt-1 text-sm text-gray-900 bg-gray-50 px-3 py-2 rounded-md">Rp {{ number_format($tunjangan->jumlah, 0, ',', '.') }}</p>
                 </div>
 
                 <!-- Description -->
                 <div>
                     <label class="block text-sm font-medium text-gray-700">Description</label>
-                    <p id="allowanceDescription" class="mt-1 text-sm text-gray-900 bg-gray-50 px-3 py-2 rounded-md min-h-[3rem]">Loading...</p>
+                    <p class="mt-1 text-sm text-gray-900 bg-gray-50 px-3 py-2 rounded-md min-h-[3rem]">{{ $tunjangan->keterangan }}</p>
                 </div>
             </div>
         </div>
@@ -69,19 +69,19 @@
                 <!-- Staff Name -->
                 <div>
                     <label class="block text-sm font-medium text-gray-700">Staff Name</label>
-                    <p id="staffName" class="mt-1 text-sm text-gray-900 bg-gray-50 px-3 py-2 rounded-md">Loading...</p>
+                    <p class="mt-1 text-sm text-gray-900 bg-gray-50 px-3 py-2 rounded-md">{{ $tunjangan->staff->nama ?? 'N/A' }}</p>
                 </div>
 
                 <!-- Staff ID -->
                 <div>
                     <label class="block text-sm font-medium text-gray-700">Staff ID</label>
-                    <p id="staffId" class="mt-1 text-sm text-gray-900 bg-gray-50 px-3 py-2 rounded-md">Loading...</p>
+                    <p class="mt-1 text-sm text-gray-900 bg-gray-50 px-3 py-2 rounded-md">{{ $tunjangan->staff->id ?? 'N/A' }}</p>
                 </div>
 
                 <!-- Payroll Period -->
                 <div>
                     <label class="block text-sm font-medium text-gray-700">Payroll Period</label>
-                    <p id="payrollPeriod" class="mt-1 text-sm text-gray-900 bg-gray-50 px-3 py-2 rounded-md">Loading...</p>
+                    <p class="mt-1 text-sm text-gray-900 bg-gray-50 px-3 py-2 rounded-md">{{ $tunjangan->detailPayroll->periode ?? 'N/A' }}</p>
                 </div>
             </div>
         </div>
@@ -102,7 +102,7 @@
                 </div>
                 <div class="flex-1">
                     <p class="text-sm font-medium text-gray-900">Allowance Created</p>
-                    <p id="createdAt" class="text-sm text-gray-500">Loading...</p>
+                    <p class="text-sm text-gray-500">{{ $tunjangan->created_at ? \Carbon\Carbon::parse($tunjangan->created_at)->format('M d, Y H:i') : 'N/A' }}</p>
                 </div>
             </div>
 
@@ -117,7 +117,7 @@
                 </div>
                 <div class="flex-1">
                     <p class="text-sm font-medium text-gray-900">Last Updated</p>
-                    <p id="updatedAt" class="text-sm text-gray-500">Loading...</p>
+                    <p class="text-sm text-gray-500">{{ $tunjangan->updated_at ? \Carbon\Carbon::parse($tunjangan->updated_at)->format('M d, Y H:i') : 'N/A' }}</p>
                 </div>
             </div>
         </div>

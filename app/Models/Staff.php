@@ -47,6 +47,11 @@ class Staff extends Model
         return $this->hasMany(Payroll::class);
     }
 
+    public function pengurangan()
+    {
+        return $this->hasMany(Pengurangan::class);
+    }
+
     public function getTotalPointsAttribute()
     {
         $performancePoints = $this->kinerjas()->sum('points');

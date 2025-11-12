@@ -11,7 +11,7 @@ class DetailPayrollController extends Controller
      */
     public function index()
     {
-        //
+        return view('detailpayroll.index');
     }
 
     /**
@@ -19,7 +19,7 @@ class DetailPayrollController extends Controller
      */
     public function create()
     {
-        //
+        return view('detailpayroll.create');
     }
 
     /**
@@ -27,7 +27,7 @@ class DetailPayrollController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        return view('detailpayroll.store');
     }
 
     /**
@@ -35,7 +35,7 @@ class DetailPayrollController extends Controller
      */
     public function show(string $id)
     {
-        //
+        return view('detailpayroll.index');
     }
 
     /**
@@ -43,7 +43,7 @@ class DetailPayrollController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        return view('detailpayroll.index');
     }
 
     /**
@@ -51,7 +51,7 @@ class DetailPayrollController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        return view('detailpayroll.index');
     }
 
     /**
@@ -59,6 +59,6 @@ class DetailPayrollController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        return view('detailpayroll.index');
     }
 }

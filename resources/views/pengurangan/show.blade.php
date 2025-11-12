@@ -33,19 +33,19 @@
                 <!-- Date -->
                 <div>
                     <label class="block text-sm font-medium text-gray-700">Date</label>
-                    <p id="deductionDate" class="mt-1 text-sm text-gray-900 bg-gray-50 px-3 py-2 rounded-md">Loading...</p>
+                    <p class="mt-1 text-sm text-gray-900 bg-gray-50 px-3 py-2 rounded-md">{{ \Carbon\Carbon::parse($pengurangan->tanggal)->format('M d, Y') }}</p>
                 </div>
 
                 <!-- Amount -->
                 <div>
                     <label class="block text-sm font-medium text-gray-700">Amount</label>
-                    <p id="deductionAmount" class="mt-1 text-sm text-gray-900 bg-gray-50 px-3 py-2 rounded-md">Loading...</p>
+                    <p class="mt-1 text-sm text-gray-900 bg-gray-50 px-3 py-2 rounded-md">Rp {{ number_format($pengurangan->jumlah, 0, ',', '.') }}</p>
                 </div>
 
                 <!-- Description -->
                 <div>
                     <label class="block text-sm font-medium text-gray-700">Description</label>
-                    <p id="deductionDescription" class="mt-1 text-sm text-gray-900 bg-gray-50 px-3 py-2 rounded-md min-h-[3rem]">Loading...</p>
+                    <p class="mt-1 text-sm text-gray-900 bg-gray-50 px-3 py-2 rounded-md min-h-[3rem]">{{ $pengurangan->keterangan }}</p>
                 </div>
             </div>
         </div>
@@ -57,19 +57,19 @@
                 <!-- Staff Name -->
                 <div>
                     <label class="block text-sm font-medium text-gray-700">Staff Name</label>
-                    <p id="staffName" class="mt-1 text-sm text-gray-900 bg-gray-50 px-3 py-2 rounded-md">Loading...</p>
+                    <p class="mt-1 text-sm text-gray-900 bg-gray-50 px-3 py-2 rounded-md">{{ $pengurangan->staff->nama ?? 'N/A' }}</p>
                 </div>
 
                 <!-- Staff ID -->
                 <div>
                     <label class="block text-sm font-medium text-gray-700">Staff ID</label>
-                    <p id="staffId" class="mt-1 text-sm text-gray-900 bg-gray-50 px-3 py-2 rounded-md">Loading...</p>
+                    <p class="mt-1 text-sm text-gray-900 bg-gray-50 px-3 py-2 rounded-md">{{ $pengurangan->staff->id ?? 'N/A' }}</p>
                 </div>
 
                 <!-- Payroll Period -->
                 <div>
                     <label class="block text-sm font-medium text-gray-700">Payroll Period</label>
-                    <p id="payrollPeriod" class="mt-1 text-sm text-gray-900 bg-gray-50 px-3 py-2 rounded-md">Loading...</p>
+                    <p class="mt-1 text-sm text-gray-900 bg-gray-50 px-3 py-2 rounded-md">{{ $pengurangan->detailPayroll->periode ?? 'N/A' }}</p>
                 </div>
             </div>
         </div>
@@ -90,7 +90,7 @@
                 </div>
                 <div class="flex-1">
                     <p class="text-sm font-medium text-gray-900">Deduction Created</p>
-                    <p id="createdAt" class="text-sm text-gray-500">Loading...</p>
+                    <p class="text-sm text-gray-500">{{ $pengurangan->created_at ? \Carbon\Carbon::parse($pengurangan->created_at)->format('M d, Y H:i') : 'N/A' }}</p>
                 </div>
             </div>
 
@@ -105,7 +105,7 @@
                 </div>
                 <div class="flex-1">
                     <p class="text-sm font-medium text-gray-900">Last Updated</p>
-                    <p id="updatedAt" class="text-sm text-gray-500">Loading...</p>
+                    <p class="text-sm text-gray-500">{{ $pengurangan->updated_at ? \Carbon\Carbon::parse($pengurangan->updated_at)->format('M d, Y H:i') : 'N/A' }}</p>
                 </div>
             </div>
         </div>

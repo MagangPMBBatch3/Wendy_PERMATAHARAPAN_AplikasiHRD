@@ -39,4 +39,19 @@ class DetailPayroll extends Model
     {
         return $this->belongsTo(Staff::class);
     }
+
+    public function pengurangan()
+    {
+        return $this->hasMany(Pengurangan::class, 'dt_payroll_id');
+    }
+
+    public function tunjangan()
+    {
+        return $this->hasMany(Tunjangan::class, 'dt_payroll_id');
+    }
+
+    public function overtime()
+    {
+        return $this->hasMany(Overtime::class, 'dt_payroll_id');
+    }
 }

@@ -73,17 +73,12 @@ document.addEventListener('DOMContentLoaded', function() {
     // Load staff for dropdown
     async function loadStaff() {
         try {
-            // This would need a separate API call to get staff
-            // For now, we'll add some dummy options
-            const staff = [
-                { id: 1, nama: 'Staff One' },
-                { id: 2, nama: 'Staff Two' }
-            ];
+            const staff = await PermintaanAPI.getAllStaff();
 
             staff.forEach(staffMember => {
                 const option = document.createElement('option');
                 option.value = staffMember.id;
-                option.textContent = staffMember.nama;
+                option.textContent = staffMember.user.name;
                 staffSelect.appendChild(option);
             });
         } catch (error) {

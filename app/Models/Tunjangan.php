@@ -15,7 +15,8 @@ class Tunjangan extends Model
     protected $fillable = [
         'staff_id',
         'dt_payroll_id',
-        'tipe',
+        'jenis',
+        'periode',
         'keterangan',
         'jumlah',
         'tanggal',

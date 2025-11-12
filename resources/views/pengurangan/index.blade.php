@@ -47,7 +47,31 @@
                     </tr>
                 </thead>
                 <tbody id="deductionsTableBody" class="bg-white divide-y divide-gray-200">
-                    <!-- Data will be loaded here -->
+                    @forelse($pengurangan ?? [] as $item)
+                        <tr>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{ $item->id }}</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ $item->staff->nama ?? 'N/A' }}</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ $item->detailPayroll->periode ?? 'N/A' }}</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ \Carbon\Carbon::parse($item->tanggal)->format('M d, Y') }}</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">Rp {{ number_format($item->jumlah, 0, ',', '.') }}</td>
+                            <td class="px-6 py-4 text-sm text-gray-900">{{ Str::limit($item->keterangan, 50) }}</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                <div class="flex space-x-2">
+                                    <a href="{{ route('pengurangan.show', $item->id) }}" class="text-blue-600 hover:text-blue-900">View</a>
+                                    <a href="{{ route('pengurangan.edit', $item->id) }}" class="text-indigo-600 hover:text-indigo-900">Edit</a>
+                                    <form method="POST" action="{{ route('pengurangan.destroy', $item->id) }}" class="inline-block">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="text-red-600 hover:text-red-900" onclick="return confirm('Are you sure you want to delete this deduction?')">Delete</button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan="7" class="px-6 py-4 text-center text-sm text-gray-500">No deductions found.</td>
+                        </tr>
+                    @endforelse
                 </tbody>
             </table>
         </div>

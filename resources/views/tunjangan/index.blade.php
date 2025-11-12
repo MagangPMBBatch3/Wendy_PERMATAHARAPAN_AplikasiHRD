@@ -54,7 +54,29 @@
                     </tr>
                 </thead>
                 <tbody id="allowancesTableBody" class="bg-white divide-y divide-gray-200">
-                    <!-- Data will be loaded here -->
+                    @forelse($tunjangans as $tunjangan)
+                    <tr>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{ $tunjangan->id }}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ $tunjangan->staff->nama ?? 'N/A' }}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ $tunjangan->jenis ?? 'N/A' }}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ $tunjangan->periode ?? 'N/A' }}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">Rp {{ number_format($tunjangan->jumlah, 0, ',', '.') }}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ $tunjangan->keterangan }}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                            <a href="{{ route('tunjangan.show', $tunjangan->id) }}" class="text-blue-600 hover:text-blue-900 mr-3">View</a>
+                            <a href="{{ route('tunjangan.edit', $tunjangan->id) }}" class="text-indigo-600 hover:text-indigo-900 mr-3">Edit</a>
+                            <form method="POST" action="{{ route('tunjangan.destroy', $tunjangan->id) }}" class="inline">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="text-red-600 hover:text-red-900" onclick="return confirm('Are you sure?')">Delete</button>
+                            </form>
+                        </td>
+                    </tr>
+                    @empty
+                    <tr>
+                        <td colspan="7" class="px-6 py-4 text-center text-gray-500">No allowances found.</td>
+                    </tr>
+                    @endforelse
                 </tbody>
             </table>
         </div>

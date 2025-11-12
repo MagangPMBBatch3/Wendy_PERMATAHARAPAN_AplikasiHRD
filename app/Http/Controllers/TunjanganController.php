@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Tunjangan;
 use Illuminate\Http\Request;
 
 class TunjanganController extends Controller
@@ -11,7 +12,8 @@ class TunjanganController extends Controller
      */
     public function index()
     {
-        //
+        $tunjangans = Tunjangan::with('staff', 'detailPayroll')->get();
+        return view('tunjangan.index', compact('tunjangans'));
     }
 
     /**
@@ -35,7 +37,8 @@ class TunjanganController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $tunjangan = Tunjangan::with('staff', 'detailPayroll')->findOrFail($id);
+        return view('tunjangan.show', compact('tunjangan'));
     }
 
     /**

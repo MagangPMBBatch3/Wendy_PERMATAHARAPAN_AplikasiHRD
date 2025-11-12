@@ -15,7 +15,8 @@ return new class extends Migration
             $table->id();
             $table->foreignId('staff_id')->constrained('staff')->onDelete('cascade');
             $table->foreignId('dt_payroll_id')->constrained('detail_payroll')->onDelete('cascade');
-            $table->string('tipe');
+            $table->string('jenis');
+            $table->string('periode')->nullable();
             $table->string('keterangan');
             $table->decimal('jumlah', 15, 2)->default(0);
             $table->date('tanggal');

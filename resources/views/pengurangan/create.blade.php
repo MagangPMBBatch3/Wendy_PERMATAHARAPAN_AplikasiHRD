@@ -26,7 +26,9 @@
                 <label for="staff_id" class="block text-sm font-medium text-gray-700">Staff <span class="text-red-500">*</span></label>
                 <select id="staff_id" name="staff_id" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
                     <option value="">Select staff</option>
-                    <!-- Staff will be loaded here -->
+                    @foreach($staffs as $staff)
+                        <option value="{{ $staff->id }}">{{ $staff->nama }}</option>
+                    @endforeach
                 </select>
                 <p class="mt-1 text-sm text-gray-500">Select the staff member for this deduction</p>
             </div>
@@ -36,7 +38,9 @@
                 <label for="dt_payroll_id" class="block text-sm font-medium text-gray-700">Payroll Period <span class="text-red-500">*</span></label>
                 <select id="dt_payroll_id" name="dt_payroll_id" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
                     <option value="">Select payroll period</option>
-                    <!-- Payroll periods will be loaded here -->
+                    @foreach($detailPayrolls as $detailPayroll)
+                        <option value="{{ $detailPayroll->id }}">{{ $detailPayroll->periode }}</option>
+                    @endforeach
                 </select>
                 <p class="mt-1 text-sm text-gray-500">Select the payroll period for this deduction</p>
             </div>
