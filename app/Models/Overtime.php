@@ -26,6 +26,9 @@ class Overtime extends Model
     ];
 
     protected $casts = [
+        'tanggal' => 'date',
+        'waktu_mulai' => 'datetime',
+        'waktu_selesai' => 'datetime',
         'durasi_jam' => 'decimal:2',
     ];
 

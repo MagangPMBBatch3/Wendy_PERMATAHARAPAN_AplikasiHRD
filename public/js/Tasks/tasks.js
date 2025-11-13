@@ -434,3 +434,31 @@ async function deleteTask(id) {
         showNotification('Failed to delete task.', 'error');
     }
 }
+
+// Initialize on page load
+document.addEventListener('DOMContentLoaded', function() {
+    loadTasks(1);
+});
+
+// expose loader for direct calls
+window.loadTasksData = function(page = 1) {
+    return loadTasks(page);
+};
+
+// Main loader function
+async function loadTasks(page = 1) {
+    try {
+        const loadingState = document.getElementById('loadingState');
+        if (loadingState) loadingState.style.display = 'flex';
+
+        const result = await TasksAPI.getAllTasks(page);
+        renderTasksTable(result.data);
+        renderPagination(result.paginatorInfo);
+
+        if (loadingState) loadingState.style.display = 'none';
+    } catch (error) {
+        console.error('Error loading tasks:', error);
+        const loadingState = document.getElementById('loadingState');
+        if (loadingState) loadingState.innerHTML = '<div class="text-red-500">Error loading tasks.</div>';
+    }
+}

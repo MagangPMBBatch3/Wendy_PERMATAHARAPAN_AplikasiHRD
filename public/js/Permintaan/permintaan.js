@@ -484,5 +484,11 @@ document.addEventListener('DOMContentLoaded', function() {
             };
             return classes[type] || 'bg-gray-100 text-gray-800';
         }
+
+        // expose global loader
+        window.loadPermintaanData = function(page = 1) {
+            currentPage = page;
+            loadPermintaan();
+        };
     }
 });

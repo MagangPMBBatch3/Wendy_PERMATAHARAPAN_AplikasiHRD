@@ -21,6 +21,12 @@ class Permintaan extends Model
         'waktu_selesai',
     ];
 
+    protected $casts = [
+        'tanggal' => 'date',
+        'waktu_mulai' => 'datetime',
+        'waktu_selesai' => 'datetime',
+    ];
+
     public function staff()
     {
         return $this->belongsTo(Staff::class);

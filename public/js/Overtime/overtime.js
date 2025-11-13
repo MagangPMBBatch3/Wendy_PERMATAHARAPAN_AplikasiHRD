@@ -336,6 +336,34 @@ function hideLoading(element) {
     element.innerHTML = '';
 }
 
+// Initialize on page load
+document.addEventListener('DOMContentLoaded', function() {
+    loadOvertime(1);
+});
+
+// expose loader for direct calls
+window.loadOvertimeData = function(page = 1) {
+    return loadOvertime(page);
+};
+
+// Main loader function
+async function loadOvertime(page = 1) {
+    try {
+        const loadingState = document.getElementById('loadingState');
+        if (loadingState) loadingState.style.display = 'flex';
+
+        const result = await OvertimeAPI.getAllOvertime(page);
+        renderOvertimeTable(result.data);
+        renderPagination(result.paginatorInfo);
+
+        if (loadingState) loadingState.style.display = 'none';
+    } catch (error) {
+        console.error('Error loading overtime:', error);
+        const loadingState = document.getElementById('loadingState');
+        if (loadingState) loadingState.innerHTML = '<div class="text-red-500">Error loading overtime records.</div>';
+    }
+}
+
 // Index page functions
 function renderOvertimeTable(overtimeList) {
     const tbody = document.getElementById('overtimeTableBody');

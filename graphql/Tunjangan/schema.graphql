@@ -1,7 +1,7 @@
 type Tunjangan {
     id: ID!
     staff_id: ID!
-    dt_payroll_id: ID!
+    payroll_id: ID!
     tipe: String!
     keterangan: String!
     jumlah: Float!
@@ -12,12 +12,12 @@ type Tunjangan {
     updated_at: DateTime
     deleted_at: DateTime
     staff: Staff
-    detailPayroll: DetailPayroll
+    payroll: Payroll
 }
 
 input CreateTunjanganInput {
     staff_id: ID!
-    dt_payroll_id: ID!
+    payroll_id: ID!
     tipe: String!
     keterangan: String!
     jumlah: Float!
@@ -28,7 +28,7 @@ input CreateTunjanganInput {
 
 input UpdateTunjanganInput {
     staff_id: ID
-    dt_payroll_id: ID
+    payroll_id: ID
     tipe: String
     keterangan: String
     jumlah: Float

@@ -24,6 +24,7 @@ class DetailPayroll extends Model
     ];
 
     protected $casts = [
+        'tanggal' => 'date',
         'lembur' => 'decimal:2',
         'bonus' => 'decimal:2',
         'pengurangan' => 'decimal:2',

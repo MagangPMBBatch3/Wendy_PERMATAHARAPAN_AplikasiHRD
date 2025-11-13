@@ -1,31 +1,40 @@
 type Pengurangan {
     id: ID!
     staff_id: ID!
-    dt_payroll_id: ID!
+    payroll_id: ID!
+    tipe: String!
     keterangan: String!
     jumlah: Float!
     tanggal: Date!
+    bulan: Int!
+    tahun: Int!
     created_at: DateTime
     updated_at: DateTime
     deleted_at: DateTime
     staff: Staff
-    detailPayroll: DetailPayroll
+    payroll: Payroll
 }
 
 input CreatePenguranganInput {
     staff_id: ID!
-    dt_payroll_id: ID!
+    payroll_id: ID!
+    tipe: String!
     keterangan: String!
     jumlah: Float!
     tanggal: Date!
+    bulan: Int!
+    tahun: Int!
 }
 
 input UpdatePenguranganInput {
     staff_id: ID
-    dt_payroll_id: ID
+    payroll_id: ID
+    tipe: String
     keterangan: String
     jumlah: Float
     tanggal: Date
+    bulan: Int
+    tahun: Int
 }
 
 extend type Query {

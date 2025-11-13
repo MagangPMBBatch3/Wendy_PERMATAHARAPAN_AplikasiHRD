@@ -26,6 +26,12 @@ class Tasks extends Model
         'attachment',
     ];
 
+    protected $casts = [
+        'due_date' => 'date',
+        'start_at' => 'datetime',
+        'end_at' => 'datetime',
+    ];
+
     public function creator()
     {
         return $this->belongsTo(Staff::class, 'creator_id');

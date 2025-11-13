@@ -99,6 +99,7 @@
 </div>
 
 @push('scripts')
+<script src="{{ asset('js/Pengurangan/pengurangan-api.js') }}"></script>
 <script src="{{ asset('js/Pengurangan/pengurangan.js') }}"></script>
 @endpush
 @endsection

@@ -21,6 +21,12 @@ class UserProfile extends Model
         'foto',
     ];
 
+    protected $casts = [
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime',
+        'deleted_at' => 'datetime',
+    ];
+
     public function user()
     {
         return $this->belongsTo(User::class);

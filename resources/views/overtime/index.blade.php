@@ -81,6 +81,7 @@
 </div>
 
 @push('scripts')
+<script src="{{ asset('js/Overtime/overtime-api.js') }}"></script>
 <script src="{{ asset('js/Overtime/overtime.js') }}"></script>
 @endpush
 @endsection

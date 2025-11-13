@@ -89,6 +89,7 @@
 </div>
 
 @push('scripts')
+<script src="{{ asset('js/Tasks/tasks-api.js') }}"></script>
 <script src="{{ asset('js/Tasks/tasks.js') }}"></script>
 @endpush
 @endsection

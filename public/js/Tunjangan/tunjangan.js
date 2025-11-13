@@ -405,3 +405,31 @@ async function deleteTunjangan(id) {
         showNotification('Failed to delete allowance.', 'error');
     }
 }
+
+// Initialize on page load
+document.addEventListener('DOMContentLoaded', function() {
+    loadTunjangan(1);
+});
+
+// expose loader for direct calls
+window.loadTunjanganData = function(page = 1) {
+    return loadTunjangan(page);
+};
+
+// Main loader function
+async function loadTunjangan(page = 1) {
+    try {
+        const loadingState = document.getElementById('loadingState');
+        if (loadingState) loadingState.style.display = 'flex';
+
+        const result = await TunjanganAPI.getAllTunjangan(page);
+        renderTunjanganTable(result.data);
+        renderPagination(result.paginatorInfo);
+
+        if (loadingState) loadingState.style.display = 'none';
+    } catch (error) {
+        console.error('Error loading tunjangan:', error);
+        const loadingState = document.getElementById('loadingState');
+        if (loadingState) loadingState.innerHTML = '<div class="text-red-500">Error loading allowances.</div>';
+    }
+}

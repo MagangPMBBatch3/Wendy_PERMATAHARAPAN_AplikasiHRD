@@ -14,9 +14,8 @@ class Tunjangan extends Model
 
     protected $fillable = [
         'staff_id',
-        'dt_payroll_id',
-        'jenis',
-        'periode',
+        'payroll_id',
+        'tipe',
         'keterangan',
         'jumlah',
         'tanggal',
@@ -25,6 +24,7 @@ class Tunjangan extends Model
     ];
 
     protected $casts = [
+        'tanggal' => 'date',
         'jumlah' => 'decimal:2',
     ];
 
@@ -33,8 +33,8 @@ class Tunjangan extends Model
         return $this->belongsTo(Staff::class);
     }
 
-    public function detailPayroll()
+    public function payroll()
     {
-        return $this->belongsTo(DetailPayroll::class, 'dt_payroll_id');
+        return $this->belongsTo(Payroll::class);
     }
 }

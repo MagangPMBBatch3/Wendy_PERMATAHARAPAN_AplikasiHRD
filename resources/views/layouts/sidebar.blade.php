@@ -16,7 +16,7 @@
 
         @if(Auth::user()->isAdmin() || Auth::user()->isSuperAdmin())
         <div class="mt-8">
-            <h3 class="px-6 text-xs font-semibold text-gray-500 uppercase tracking-wider">Management</h3>
+            <h3 class="px-6 text-xs font-semibold text-gray-500 uppercase tracking-wider">Staff Management</h3>
             <div class="mt-4">
                 <a href="{{ route('userprofile.index') }}" class="flex items-center px-6 py-2 text-gray-700 rounded-lg hover:bg-gradient-secondary hover:text-white transition-colors duration-200 {{ request()->routeIs('userprofile.*') ? 'bg-gradient-secondary text-white' : '' }}">
                     <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -24,30 +24,61 @@
                     </svg>
                     User Profiles
                 </a>
-                <a href="{{ route('tasks.index') }}" class="flex items-center px-6 py-2 text-gray-700 rounded-lg hover:bg-gradient-secondary hover:text-white transition-colors duration-200 {{ request()->routeIs('tasks.*') ? 'bg-gradient-secondary text-white' : '' }}">
+                  <a href="{{ route('overtime.index') }}" class="flex items-center px-6 py-2 text-gray-700 rounded-lg hover:bg-gradient-secondary hover:text-white transition-colors duration-200 {{ request()->routeIs('overtime.*') ? 'bg-gradient-secondary text-white' : '' }}">
                     <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                     </svg>
-                    Tasks
+                    Users
                 </a>
-                <a href="{{ route('permintaan.index') }}" class="flex items-center px-6 py-2 text-gray-700 rounded-lg hover:bg-gradient-secondary hover:text-white transition-colors duration-200 {{ request()->routeIs('permintaan.*') ? 'bg-gradient-secondary text-white' : '' }}">
+                 <a href="{{ route('overtime.index') }}" class="flex items-center px-6 py-2 text-gray-700 rounded-lg hover:bg-gradient-secondary hover:text-white transition-colors duration-200 {{ request()->routeIs('overtime.*') ? 'bg-gradient-secondary text-white' : '' }}">
+                    <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                    Staff
+                </a>
+               
+                 <a href="{{ route('userprofile.index') }}" class="flex items-center px-6 py-2 text-gray-700 rounded-lg hover:bg-gradient-secondary hover:text-white transition-colors duration-200 {{ request()->routeIs('pengurangantelat.*') ? 'bg-gradient-secondary text-white' : '' }}">
+                    <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z"></path>
+                    </svg>
+                    Absensi
+                </a>
+                
+                
+                 <a href="{{ route('permintaan.index') }}" class="flex items-center px-6 py-2 text-gray-700 rounded-lg hover:bg-gradient-secondary hover:text-white transition-colors duration-200 {{ request()->routeIs('permintaan.*') ? 'bg-gradient-secondary text-white' : '' }}">
                     <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
                     </svg>
                     Permintaan
                 </a>
-                {{-- TODO: Implement remaining modules --}}
-                <a href="{{ route('pengurangan.index') }}" class="flex items-center px-6 py-2 text-gray-700 rounded-lg hover:bg-gradient-secondary hover:text-white transition-colors duration-200 {{ request()->routeIs('pengurangan.*') ? 'bg-gradient-secondary text-white' : '' }}">
+                 <a href="{{ route('overtime.index') }}" class="flex items-center px-6 py-2 text-gray-700 rounded-lg hover:bg-gradient-secondary hover:text-white transition-colors duration-200 {{ request()->routeIs('overtime.*') ? 'bg-gradient-secondary text-white' : '' }}">
                     <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                     </svg>
-                    Pengurangan
+                    Kinerja
                 </a>
-                <a href="{{ route('tunjangan.index') }}" class="flex items-center px-6 py-2 text-gray-700 rounded-lg hover:bg-gradient-secondary hover:text-white transition-colors duration-200 {{ request()->routeIs('tunjangan.*') ? 'bg-gradient-secondary text-white' : '' }}">
+                 <a href="{{ route('overtime.index') }}" class="flex items-center px-6 py-2 text-gray-700 rounded-lg hover:bg-gradient-secondary hover:text-white transition-colors duration-200 {{ request()->routeIs('overtime.*') ? 'bg-gradient-secondary text-white' : '' }}">
                     <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                     </svg>
-                    Tunjangan
+                    Levels
+                </a>
+                
+
+
+
+                <h3 class="px-6 text-xs font-semibold text-gray-500 uppercase tracking-wider">Project</h3>
+                <a href="{{ route('tasks.index') }}" class="flex items-center px-6 py-2 text-gray-700 rounded-lg hover:bg-gradient-secondary hover:text-white transition-colors duration-200 {{ request()->routeIs('tasks.*') ? 'bg-gradient-secondary text-white' : '' }}">
+                    <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
+                    </svg>
+                   Project
+                </a>
+                <a href="{{ route('tasks.index') }}" class="flex items-center px-6 py-2 text-gray-700 rounded-lg hover:bg-gradient-secondary hover:text-white transition-colors duration-200 {{ request()->routeIs('tasks.*') ? 'bg-gradient-secondary text-white' : '' }}">
+                    <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
+                    </svg>
+                    Tasks
                 </a>
                 <a href="{{ route('overtime.index') }}" class="flex items-center px-6 py-2 text-gray-700 rounded-lg hover:bg-gradient-secondary hover:text-white transition-colors duration-200 {{ request()->routeIs('overtime.*') ? 'bg-gradient-secondary text-white' : '' }}">
                     <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -55,18 +86,29 @@
                     </svg>
                     Overtime
                 </a>
+
+                <h3 class="px-6 text-xs font-semibold text-gray-500 uppercase tracking-wider">Payroll</h3>
+
                 <a href="{{ route('detailpayroll.index') }}" class="flex items-center px-6 py-2 text-gray-700 rounded-lg hover:bg-gradient-secondary hover:text-white transition-colors duration-200 {{ request()->routeIs('detailpayroll.*') ? 'bg-gradient-secondary text-white' : '' }}">
                     <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path>
                     </svg>
-                    Detail Payroll
+                    Payroll
                 </a>
-                <a href="{{ route('pengurangantelat.index') }}" class="flex items-center px-6 py-2 text-gray-700 rounded-lg hover:bg-gradient-secondary hover:text-white transition-colors duration-200 {{ request()->routeIs('pengurangantelat.*') ? 'bg-gradient-secondary text-white' : '' }}">
+                <a href="{{ route('tunjangan.index') }}" class="flex items-center px-6 py-2 text-gray-700 rounded-lg hover:bg-gradient-secondary hover:text-white transition-colors duration-200 {{ request()->routeIs('tunjangan.*') ? 'bg-gradient-secondary text-white' : '' }}">
                     <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z"></path>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                     </svg>
-                    Pengurangan Telat
-                </a> 
+                    Tunjangan
+                </a>
+             <a href="{{ route('pengurangan.index') }}" class="flex items-center px-6 py-2 text-gray-700 rounded-lg hover:bg-gradient-secondary hover:text-white transition-colors duration-200 {{ request()->routeIs('pengurangan.*') ? 'bg-gradient-secondary text-white' : '' }}">
+                    <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path>
+                    </svg>
+                    Pengurangan
+                </a>
+                
+                
             </div>
         </div>
         @endif

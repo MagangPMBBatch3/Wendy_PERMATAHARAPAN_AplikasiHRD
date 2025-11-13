@@ -37,7 +37,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 foto: formData.get('foto') ? await fileToBase64(formData.get('foto')) : null
             };
 
-            const result = await UserProfileAPI.createProfile(profileData);
+            const result = await UserProfileAPI.createUserProfile(profileData);
 
             showNotification('Profile created successfully!', 'success');
 
@@ -85,12 +85,10 @@ document.addEventListener('DOMContentLoaded', function() {
     // Load staff for dropdown
     async function loadStaff() {
         try {
-            // This would need a separate API call to get staff
-            // For now, we'll add some dummy options
-            const staff = [
-                { id: 1, nama: 'Staff One' },
-                { id: 2, nama: 'Staff Two' }
-            ];
+            // Fetch staff data from API
+            const response = await fetch('/api/staff');
+            if (!response.ok) throw new Error('Network response was not ok');
+            const staff = await response.json();
 
             staff.forEach(staffMember => {
                 const option = document.createElement('option');

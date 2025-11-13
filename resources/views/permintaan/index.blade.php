@@ -86,6 +86,7 @@
 </div>
 
 @push('scripts')
+<script src="{{ asset('js/Permintaan/permintaan-api.js') }}"></script>
 <script src="{{ asset('js/Permintaan/permintaan.js') }}"></script>
 @endpush
 @endsection

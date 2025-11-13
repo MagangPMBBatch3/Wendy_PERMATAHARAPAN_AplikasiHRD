@@ -50,7 +50,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             });
 
-            const result = await UserProfileAPI.updateProfile(profileId, profileData);
+            const result = await UserProfileAPI.updateUserProfile(profileId, profileData);
 
             showNotification('Profile updated successfully!', 'success');
 
@@ -76,7 +76,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Load profile data
     async function loadProfileData(id) {
         try {
-            const profile = await UserProfileAPI.getProfile(id);
+            const profile = await UserProfileAPI.getUserProfile(id);
 
             if (profile) {
                 // Populate form fields

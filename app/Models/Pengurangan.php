@@ -14,13 +14,17 @@ class Pengurangan extends Model
 
     protected $fillable = [
         'staff_id',
-        'dt_payroll_id',
+        'payroll_id',
+        'tipe',
         'keterangan',
         'jumlah',
         'tanggal',
+        'bulan',
+        'tahun',
     ];
 
     protected $casts = [
+        'tanggal' => 'date',
         'jumlah' => 'decimal:2',
     ];
 
@@ -29,8 +33,8 @@ class Pengurangan extends Model
         return $this->belongsTo(Staff::class);
     }
 
-    public function detailPayroll()
+    public function payroll()
     {
-        return $this->belongsTo(DetailPayroll::class, 'dt_payroll_id');
+        return $this->belongsTo(Payroll::class);
     }
 }

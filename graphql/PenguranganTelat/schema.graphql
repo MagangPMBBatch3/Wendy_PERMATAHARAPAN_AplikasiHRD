@@ -1,36 +1,36 @@
 type PenguranganTelat {
     id: ID!
     staff_id: ID!
-    dt_payroll_id: ID!
+    payroll_id: ID!
     keterangan: String!
     jumlah: Float!
     tanggal: Date!
-    waktu_datang: String!
+    waktu_datang: DateTime!
     durasi_telat: Float!
     created_at: DateTime
     updated_at: DateTime
     deleted_at: DateTime
     staff: Staff
-    detailPayroll: DetailPayroll
+    payroll: Payroll
 }
 
 input CreatePenguranganTelatInput {
     staff_id: ID!
-    dt_payroll_id: ID!
+    payroll_id: ID!
     keterangan: String!
     jumlah: Float!
     tanggal: Date!
-    waktu_datang: String!
+    waktu_datang: DateTime!
     durasi_telat: Float!
 }
 
 input UpdatePenguranganTelatInput {
     staff_id: ID
-    dt_payroll_id: ID
+    payroll_id: ID
     keterangan: String
     jumlah: Float
     tanggal: Date
-    waktu_datang: String
+    waktu_datang: DateTime
     durasi_telat: Float
 }
 

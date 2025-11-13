@@ -14,7 +14,7 @@ class PenguranganTelat extends Model
 
     protected $fillable = [
         'staff_id',
-        'dt_payroll_id',
+        'payroll_id',
         'keterangan',
         'jumlah',
         'tanggal',
@@ -23,6 +23,8 @@ class PenguranganTelat extends Model
     ];
 
     protected $casts = [
+        'tanggal' => 'date',
+        'waktu_datang' => 'datetime',
         'jumlah' => 'decimal:2',
         'durasi_telat' => 'decimal:2',
     ];
@@ -32,8 +34,8 @@ class PenguranganTelat extends Model
         return $this->belongsTo(Staff::class);
     }
 
-    public function detailPayroll()
+    public function payroll()
     {
-        return $this->belongsTo(DetailPayroll::class, 'dt_payroll_id');
+        return $this->belongsTo(Payroll::class);
     }
 }

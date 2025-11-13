@@ -104,6 +104,7 @@
 </div>
 
 @push('scripts')
+<script src="{{ asset('js/Tunjangan/tunjangan-api.js') }}"></script>
 <script src="{{ asset('js/Tunjangan/tunjangan.js') }}"></script>
 @endpush
 @endsection
