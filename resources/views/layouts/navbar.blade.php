@@ -1,7 +1,12 @@
 <!-- Navigation Bar Component -->
-<nav class="bg-gradient-to-r from-blue-600 to-blue-800 shadow-lg">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<nav class="bg-gradient-to-r from-blue-600 to-blue-800 shadow-lg fixed w-full z-30 top-0 left-0 right-0 h-16">
+    <div class="w-full h-full px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between items-center h-16">
+            <div class="flex items-center">
+                <button id="sidebar-toggle" class="text-white mr-4 md:hidden">
+                    ☰
+                </button>
+            </div>
             <!-- Logo -->
             <div class="flex-shrink-0 flex items-center">
                 <a href="/dashboard" class="text-white text-2xl font-bold">
@@ -9,95 +14,39 @@
                 </a>
             </div>
 
-            <!-- Main Menu -->
-            <div class="hidden md:block">
-                <div class="ml-10 flex items-baseline space-x-4">
-                    <a href="{{ route('dashboard') }}" class="text-gray-200 hover:bg-blue-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium transition {{ request()->routeIs('dashboard') ? 'bg-blue-800' : '' }}">
-                        Dashboard
-                    </a>
+            <!-- Empty space for center alignment -->
+            <div class="flex-1"></div>
 
-                    <!-- HR Management Dropdown -->
-                    <div class="relative group">
-                        <button class="text-gray-200 hover:bg-blue-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium transition">
-                            HR Management
-                            <span class="ml-2">▼</span>
-                        </button>
-                        <div class="absolute left-0 mt-0 w-48 bg-white rounded-md shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition duration-200 z-50">
-                            <a href="{{ route('staff.index') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 first:rounded-t-md {{ request()->routeIs('staff.*') ? 'bg-blue-50 text-blue-700' : '' }}">Staff</a>
-                            <a href="{{ route('level.index') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 {{ request()->routeIs('level.*') ? 'bg-blue-50 text-blue-700' : '' }}">Levels</a>
-                            <a href="{{ route('user.index') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 {{ request()->routeIs('user.*') ? 'bg-blue-50 text-blue-700' : '' }}">Users</a>
-                            <a href="{{ route('userprofile.index') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 last:rounded-b-md {{ request()->routeIs('userprofile.*') ? 'bg-blue-50 text-blue-700' : '' }}">User Profiles</a>
-                        </div>
-                    </div>
-
-                    <!-- Projects Dropdown -->
-                    <div class="relative group">
-                        <button class="text-gray-200 hover:bg-blue-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium transition">
-                            Projects
-                            <span class="ml-2">▼</span>
-                        </button>
-                        <div class="absolute left-0 mt-0 w-48 bg-white rounded-md shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition duration-200 z-50">
-                            <a href="{{ route('proyek.index') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 first:rounded-t-md {{ request()->routeIs('proyek.*') ? 'bg-blue-50 text-blue-700' : '' }}">Projects</a>
-                            <a href="{{ route('tasks.index') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 {{ request()->routeIs('tasks.*') ? 'bg-blue-50 text-blue-700' : '' }}">Tasks</a>
-                            <a href="{{ route('kinerja.index') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 last:rounded-b-md {{ request()->routeIs('kinerja.*') ? 'bg-blue-50 text-blue-700' : '' }}">Performance</a>
-                        </div>
-                    </div>
-
-                    <!-- Attendance Dropdown -->
-                    <div class="relative group">
-                        <button class="text-gray-200 hover:bg-blue-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium transition">
-                            Attendance
-                            <span class="ml-2">▼</span>
-                        </button>
-                        <div class="absolute left-0 mt-0 w-48 bg-white rounded-md shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition duration-200 z-50">
-                            <a href="{{ route('absensi.index') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 first:rounded-t-md {{ request()->routeIs('absensi.*') ? 'bg-blue-50 text-blue-700' : '' }}">Attendance</a>
-                            <a href="{{ route('overtime.index') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 last:rounded-b-md {{ request()->routeIs('overtime.*') ? 'bg-blue-50 text-blue-700' : '' }}">Overtime</a>
-                        </div>
-                    </div>
-
-                    <!-- Payroll Dropdown -->
-                    <div class="relative group">
-                        <button class="text-gray-200 hover:bg-blue-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium transition">
-                            Payroll
-                            <span class="ml-2">▼</span>
-                        </button>
-                        <div class="absolute left-0 mt-0 w-48 bg-white rounded-md shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition duration-200 z-50">
-                            <a href="{{ route('payroll.index') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 first:rounded-t-md {{ request()->routeIs('payroll.*') ? 'bg-blue-50 text-blue-700' : '' }}">Payroll</a>
-                            <a href="{{ route('detailpayroll.index') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 {{ request()->routeIs('detailpayroll.*') ? 'bg-blue-50 text-blue-700' : '' }}">Detail Payroll</a>
-                            <a href="{{ route('tunjangan.index') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 {{ request()->routeIs('tunjangan.*') ? 'bg-blue-50 text-blue-700' : '' }}">Allowances</a>
-                            <a href="{{ route('pengurangan.index') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 {{ request()->routeIs('pengurangan.*') ? 'bg-blue-50 text-blue-700' : '' }}">Deductions</a>
-                            <a href="{{ route('pengurangantelat.index') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 last:rounded-b-md {{ request()->routeIs('pengurangantelat.*') ? 'bg-blue-50 text-blue-700' : '' }}">Late Deductions</a>
-                        </div>
-                    </div>
-
-                    <!-- Requests & Communications -->
-                    <div class="relative group">
-                        <button class="text-gray-200 hover:bg-blue-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium transition">
-                            More
-                            <span class="ml-2">▼</span>
-                        </button>
-                        <div class="absolute left-0 mt-0 w-48 bg-white rounded-md shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition duration-200 z-50">
-                            <a href="{{ route('permintaan.index') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 first:rounded-t-md {{ request()->routeIs('permintaan.*') ? 'bg-blue-50 text-blue-700' : '' }}">Requests</a>
-                            <a href="{{ route('pengumuman.index') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 {{ request()->routeIs('pengumuman.*') ? 'bg-blue-50 text-blue-700' : '' }}">Announcements</a>
-                            <a href="{{ route('activitylog.index') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 last:rounded-b-md {{ request()->routeIs('activitylog.*') ? 'bg-blue-50 text-blue-700' : '' }}">Activity Log</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- User Profile & Logout -->
-            <div class="hidden md:block">
-                <div class="ml-4 flex items-center md:ml-6">
-                    <div class="relative group">
-                        <button class="bg-blue-700 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-blue-800 transition">
-                            {{ Auth::user()->name }}
-                            <span class="ml-2">▼</span>
-                        </button>
+            <!-- User Profile & Settings -->
+            <div class="ml-4 flex items-center md:ml-6">
+                <div class="relative group">
+                    <button class="bg-blue-700 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-blue-800 transition flex items-center">
+                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                        </svg>
+                        {{ Auth::user()->name }}
+                        <span class="ml-2">▼</span>
+                    </button>
                         <div class="absolute right-0 mt-0 w-48 bg-white rounded-md shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition duration-200 z-50">
-                            <a href="{{ route('userprofile.index') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 first:rounded-t-md {{ request()->routeIs('userprofile.*') ? 'bg-blue-50 text-blue-700' : '' }}">My Profile</a>
+                            <a href="{{ route('userprofile.index') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 first:rounded-t-md {{ request()->routeIs('userprofile.*') ? 'bg-blue-50 text-blue-700' : '' }}">
+                                <svg class="w-4 h-4 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                                </svg>
+                                My Profile
+                            </a>
+                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 last:rounded-b-md">
+                                <svg class="w-4 h-4 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path>
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                </svg>
+                                Settings
+                            </a>
                             <form method="POST" action="{{ route('logout') }}" class="block">
                                 @csrf
                                 <button type="submit" class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 last:rounded-b-md">
+                                    <svg class="w-4 h-4 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path>
+                                    </svg>
                                     Logout
                                 </button>
                             </form>
@@ -109,33 +58,23 @@
             <!-- Mobile menu button -->
             <div class="md:hidden">
                 <button type="button" class="inline-flex items-center justify-center p-2 rounded-md text-gray-200 hover:text-white hover:bg-blue-700 focus:outline-none focus:bg-blue-700 focus:text-white transition text-xl" id="mobile-menu-btn">
-                    ☰
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                    </svg>
                 </button>
             </div>
         </div>
     </div>
 
-    <!-- Mobile menu -->
-    <div id="mobile-menu" class="md:hidden hidden bg-blue-700">
+    <!-- Mobile User Menu -->
+    <div id="mobile-menu" class="md:hidden hidden bg-blue-700 border-t border-blue-600">
         <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
-            <a href="/dashboard" class="text-gray-200 hover:bg-blue-600 block px-3 py-2 rounded-md text-base font-medium">Dashboard</a>
-            <a href="/staff" class="text-gray-200 hover:bg-blue-600 block px-3 py-2 rounded-md text-base font-medium">Staff</a>
-            <a href="/level" class="text-gray-200 hover:bg-blue-600 block px-3 py-2 rounded-md text-base font-medium">Levels</a>
-            <a href="/user" class="text-gray-200 hover:bg-blue-600 block px-3 py-2 rounded-md text-base font-medium">Users</a>
-            <a href="/userprofile" class="text-gray-200 hover:bg-blue-600 block px-3 py-2 rounded-md text-base font-medium">User Profiles</a>
-            <a href="/proyek" class="text-gray-200 hover:bg-blue-600 block px-3 py-2 rounded-md text-base font-medium">Projects</a>
-            <a href="/tasks" class="text-gray-200 hover:bg-blue-600 block px-3 py-2 rounded-md text-base font-medium">Tasks</a>
-            <a href="/kinerja" class="text-gray-200 hover:bg-blue-600 block px-3 py-2 rounded-md text-base font-medium">Performance</a>
-            <a href="/absensi" class="text-gray-200 hover:bg-blue-600 block px-3 py-2 rounded-md text-base font-medium">Attendance</a>
-            <a href="/overtime" class="text-gray-200 hover:bg-blue-600 block px-3 py-2 rounded-md text-base font-medium">Overtime</a>
-            <a href="/payroll" class="text-gray-200 hover:bg-blue-600 block px-3 py-2 rounded-md text-base font-medium">Payroll</a>
-            <a href="/detailpayroll" class="text-gray-200 hover:bg-blue-600 block px-3 py-2 rounded-md text-base font-medium">Detail Payroll</a>
-            <a href="/tunjangan" class="text-gray-200 hover:bg-blue-600 block px-3 py-2 rounded-md text-base font-medium">Allowances</a>
-            <a href="/pengurangan" class="text-gray-200 hover:bg-blue-600 block px-3 py-2 rounded-md text-base font-medium">Deductions</a>
-            <a href="/pengurangantelat" class="text-gray-200 hover:bg-blue-600 block px-3 py-2 rounded-md text-base font-medium">Late Deductions</a>
-            <a href="/permintaan" class="text-gray-200 hover:bg-blue-600 block px-3 py-2 rounded-md text-base font-medium">Requests</a>
-            <a href="/pengumuman" class="text-gray-200 hover:bg-blue-600 block px-3 py-2 rounded-md text-base font-medium">Announcements</a>
-            <a href="/activitylog" class="text-gray-200 hover:bg-blue-600 block px-3 py-2 rounded-md text-base font-medium">Activity Log</a>
+            <a href="{{ route('userprofile.index') }}" class="text-gray-200 hover:bg-blue-600 block px-3 py-2 rounded-md text-sm font-medium">My Profile</a>
+            <a href="#" class="text-gray-200 hover:bg-blue-600 block px-3 py-2 rounded-md text-sm font-medium">Settings</a>
+            <form method="POST" action="{{ route('logout') }}">
+                @csrf
+                <button type="submit" class="text-gray-200 hover:bg-blue-600 block w-full text-left px-3 py-2 rounded-md text-sm font-medium">Logout</button>
+            </form>
         </div>
     </div>
 </nav>

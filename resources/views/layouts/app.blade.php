@@ -36,17 +36,17 @@
     </style>
 </head>
 <body class="bg-gray-50 font-sans antialiased">
-    <div class="min-h-screen flex">
+    <!-- Top Navigation -->
+    @include('layouts.navbar')
+
+    <div class="flex pt-16"> <!-- Added pt-16 to account for fixed navbar height -->
         <!-- Sidebar -->
         @include('layouts.sidebar')
 
         <!-- Main Content -->
-        <div class="flex-1 flex flex-col overflow-hidden">
-            <!-- Top Navigation -->
-            @include('layouts.navbar')
-
+        <div class="flex-1 ml-64 overflow-hidden"> <!-- ml-64 for sidebar width -->
             <!-- Page Content -->
-            <main class="flex-1 overflow-x-hidden overflow-y-auto bg-gray-50 p-6">
+            <main class="h-screen overflow-x-hidden overflow-y-auto bg-gray-50 p-6">
                 @yield('content')
             </main>
         </div>

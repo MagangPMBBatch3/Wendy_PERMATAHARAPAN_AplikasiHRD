@@ -3,18 +3,75 @@
 @section('content')
 <div class="space-y-6">
     <!-- Header -->
-    <div class="flex justify-between items-center">
-        <div>
-            <h1 class="text-2xl font-bold text-gray-900">Tunjangan</h1>
-            <p class="text-gray-600">Manage staff allowances and benefits</p>
-        </div>
-        <a href="{{ route('tunjangan.create') }}" class="bg-gradient-primary text-white px-4 py-2 rounded-lg hover:bg-gradient-secondary transition-colors duration-200 flex items-center">
-            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
-            </svg>
-            Add Allowance
-        </a>
+    <div class="flex justify-between items-center mb-6">
+        <h1 class="text-3xl font-bold text-gray-900">Tunjangan Management</h1>
+        <button onclick="crud.openCreate()" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Add New Tunjangan</button>
     </div>
+
+    <div class="mb-6 flex gap-4">
+        <div class="flex-1">
+            <input type="text" id="searchInput" placeholder="Search tunjangan..." class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+        </div>
+        <button id="searchBtn" class="bg-gray-600 hover:bg-gray-700 text-white font-bold py-2 px-6 rounded">Search</button>
+    </div>
+
+    <div class="overflow-x-auto bg-white rounded-lg shadow">
+        <table class="min-w-full">
+            <thead class="bg-gray-100 border-b">
+                <tr>
+                    <th class="px-6 py-4 text-left text-sm font-semibold">ID</th>
+                    <th class="px-6 py-4 text-left text-sm font-semibold">Staff</th>
+                    <th class="px-6 py-4 text-left text-sm font-semibold">Type</th>
+                    <th class="px-6 py-4 text-left text-sm font-semibold">Amount</th>
+                    <th class="px-6 py-4 text-left text-sm font-semibold">Start Date</th>
+                    <th class="px-6 py-4 text-left text-sm font-semibold">End Date</th>
+                    <th class="px-6 py-4 text-left text-sm font-semibold">Actions</th>
+                </tr>
+            </thead>
+            <tbody id="dataTableBody">
+                <tr><td colspan="7" class="text-center py-8 text-gray-500">Loading...</td></tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="mt-6 flex justify-between items-center">
+        <button id="prevPageBtn" class="bg-gray-600 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded">Previous</button>
+        <span id="currentPage" class="text-gray-700 font-medium">Page 1 of 1</span>
+        <button id="nextPageBtn" class="bg-gray-600 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded">Next</button>
+    </div>
+</div>
+
+<div id="formModal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center">
+    <div class="bg-white rounded-lg shadow-lg p-8 w-96 max-h-96 overflow-y-auto">
+        <div class="flex justify-between items-center mb-6">
+            <h2 id="modalTitle" class="text-2xl font-bold">Add New Tunjangan</h2>
+            <button onclick="document.getElementById('formModal').classList.add('hidden')" class="text-2xl">&times;</button>
+        </div>
+
+        <form id="crud-form" class="space-y-4">
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">Staff</label>
+                <select id="staff_id" name="staff_id" required class="w-full px-3 py-2 border border-gray-300 rounded-lg"></select>
+            </div>
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">Type</label>
+                <input type="text" id="type" name="type" class="w-full px-3 py-2 border border-gray-300 rounded-lg">
+            </div>
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">Amount</label>
+                <input type="number" id="amount" name="amount" class="w-full px-3 py-2 border border-gray-300 rounded-lg">
+            </div>
+            <div class="flex gap-4 pt-6">
+                <button type="submit" class="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Save</button>
+                <button type="button" onclick="document.getElementById('formModal').classList.add('hidden')" class="flex-1 bg-gray-400 hover:bg-gray-500 text-white font-bold py-2 px-4 rounded">Cancel</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script src="/js/crud-manager.js"></script>
+<script src="/js/Tunjangan/tunjangan-crud.js"></script>
+@endsection
 
     <!-- Search and Filter -->
     <div class="bg-white rounded-lg shadow-sm p-6">
