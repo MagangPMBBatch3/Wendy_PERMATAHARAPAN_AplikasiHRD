@@ -40,6 +40,9 @@ extend type Query {
     # cari berdasarkan staff_id
     kinerjaByStaffId(staff_id: ID! @eq(key: "staff_id")): [Kinerja!]!
     @all(model: "App\\Models\\Kinerja")
+
+    # paginated query for listing
+    allKinerjaPaginate(first: Int, page: Int, search: String): KinerjaPaginator @paginate(model: "App\\Models\\Kinerja")
 }
 
 extend type Mutation {

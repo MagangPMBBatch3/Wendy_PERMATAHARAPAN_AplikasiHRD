@@ -1,90 +1,87 @@
 @extends('layouts.app')
 
-@section('title', 'Level Management')
+@section('title', 'Level')
 
 @section('content')
-<div class="container mx-auto px-4 py-8">
-    <!-- Header -->
-    <div class="flex justify-between items-center mb-6">
-        <h1 class="text-3xl font-bold text-gray-900">Level Management</h1>
-        <button onclick="crud.openCreate()" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-            Add New Level
-        </button>
-    </div>
+    <div class="bg-slate-800/90 p-4 rounded-xl shadow w-full">
+        <h1 class="text-2xl font-bold mb-4 text-white">Data Level</h1>
 
-    <!-- Search and Filter -->
-    <div class="mb-6 flex gap-4">
-        <div class="flex-1">
-            <input type="text" id="searchInput" placeholder="Search levels..." class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+        {{-- Tombol Tambah & Pencarian --}}
+        <div class="flex justify-between mb-4">
+            <input
+                type="text"
+                id="searchInput"
+                placeholder="Cari ID atau Nama..."
+                class="bg-slate-700/70 text-gray-200 placeholder-gray-400 border border-slate-600 p-2 rounded-lg w-64 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                oninput="searchLevel()">
+
+            <button onclick="openAddModal()"
+                class="bg-blue-500 text-white px-4 py-2 rounded">
+                Tambah Data
+            </button>
         </div>
-        <button id="searchBtn" class="bg-gray-600 hover:bg-gray-700 text-white font-bold py-2 px-6 rounded">
-            Search
-        </button>
-    </div>
 
-    <!-- Table -->
-    <div class="overflow-x-auto bg-white rounded-lg shadow">
-        <table class="min-w-full">
-            <thead class="bg-gray-100 border-b">
+        {{-- Tabel Data --}}
+        <table class="w-full border border-slate-700 rounded-lg overflow-hidden">
+            <thead class="bg-slate-700 text-gray-300 uppercase text-xs">
                 <tr>
-                    <th class="px-6 py-4 text-left text-sm font-semibold text-gray-900">ID</th>
-                    <th class="px-6 py-4 text-left text-sm font-semibold text-gray-900">Name</th>
-                    <th class="px-6 py-4 text-left text-sm font-semibold text-gray-900">Description</th>
-                    <th class="px-6 py-4 text-left text-sm font-semibold text-gray-900">Actions</th>
+                    <th class="border border-slate-600 p-2 text-center">ID</th>
+                    <th class="border border-slate-600 p-2">Nama</th>
+                    <th class="border border-slate-600 p-2">Deskripsi</th>
+                    <th class="border border-slate-600 p-2">Tanggal Dibuat</th>
+                    <th class="border border-slate-600 p-2 text-center">Aksi</th>
                 </tr>
             </thead>
-            <tbody id="dataTableBody">
+            <tbody id="dataLevel">
                 <tr>
-                    <td colspan="4" class="text-center py-8 text-gray-500">Loading...</td>
-                </tr>
+                        <td colspan="5" class="text-center p-4 text-gray-500">
+                            <div class="flex flex-col items-center">
+                                <svg class="w-12 h-12 text-gray-400 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                                </svg>
+                                <p>Loading data...</p>
+                                <p class="text-sm">If this message persists, check your connection or try refreshing the page.</p>
+                            </div>
+                        </td>
+                    </tr>
             </tbody>
         </table>
+
+
+        {{-- pagination navigasi --}}
+        <div class="flex justify-between items-center mt-4">
+            <div id="pageInfo" class="text-gray-600 text-sm">
+                {{-- Info pagination akan diisi oleh JavaScript --}}
+            </div>
+            <div class="flex items-center gap-4">
+                <select id="perPage" class="border p-2 rounded" onChange="loadDataPaginate(1)">
+                    <option value="5">5</option>
+                    <option value="10" selected>10</option>
+                    <option value="25">25</option>
+                    <option value="50">50</option>
+                    <option value="100">100</option>
+                </select>
+
+                <div class="flex gap-2">
+                    <button id="prevBtn" onclick="prevPage()"
+                    class="bg-gray-300 px-3 py-1 rounded disabled:opacity-50">
+                    Back
+                    </button>
+                    <button id="nextBtn" onclick="nextPage()"
+                    class="bg-gray-300 px-3 py-1 rounded disabled:opacity-50">
+                    Next
+                    </button>
+                </div>
+                {{-- Kontrol pagination akan diisi oleh JavaScript --}}
+            </div>
     </div>
 
-    <!-- Pagination -->
-    <div class="mt-6 flex justify-between items-center">
-        <button id="prevPageBtn" class="bg-gray-600 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded">
-            Previous
-        </button>
-        <span id="currentPage" class="text-gray-700 font-medium">Page 1 of 1</span>
-        <button id="nextPageBtn" class="bg-gray-600 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded">
-            Next
-        </button>
-    </div>
-</div>
+    {{-- Include Modal Tambah --}}
+    @include('components.level.modal-add')
 
-<!-- Modal for Create/Edit -->
-<div id="formModal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center">
-    <div class="bg-white rounded-lg shadow-lg p-8 w-96 max-h-96 overflow-y-auto">
-        <div class="flex justify-between items-center mb-6">
-            <h2 id="modalTitle" class="text-2xl font-bold text-gray-900">Add New Level</h2>
-            <button onclick="document.getElementById('formModal').classList.add('hidden')" class="text-gray-500 hover:text-gray-700 text-2xl">&times;</button>
-        </div>
+    {{-- Include Modal Edit --}}
+    @include('components.level.modal-edit')
 
-        <form id="crud-form" class="space-y-4">
-            <div>
-                <label class="block text-sm font-medium text-gray-700 mb-2">Name</label>
-                <input type="text" id="name" name="name" required class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
-            </div>
-
-            <div>
-                <label class="block text-sm font-medium text-gray-700 mb-2">Description</label>
-                <textarea id="description" name="description" rows="3" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
-            </div>
-
-            <div class="flex gap-4 pt-6">
-                <button type="submit" class="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                    Save
-                </button>
-                <button type="button" onclick="document.getElementById('formModal').classList.add('hidden')" class="flex-1 bg-gray-400 hover:bg-gray-500 text-white font-bold py-2 px-4 rounded">
-                    Cancel
-                </button>
-            </div>
-        </form>
-    </div>
-</div>
-
-<!-- Import Scripts -->
-<script src="/js/crud-manager.js"></script>
-<script src="/js/Level/level-crud.js"></script>
+    {{-- Script --}}
+    <script src="{{ asset('js/Level/level.js') }}"></script>
 @endsection

@@ -1,0 +1,48 @@
+# Pengumuman feature schema
+# Minimal schema matching existing resolver methods in
+# `App\GraphQL\Pengumuman\Queries\PengumumanQuery` and
+# `App\GraphQL\Pengumuman\Mutations\PengumumanMutation`.
+
+# Note: project already defines scalars like DateTime and shared types (e.g. User, PageInfo)
+# so we avoid redefining those here.
+
+type Pengumuman {
+  id: ID!
+  title: String!
+  content: String
+  author_id: ID
+  published_date: DateTime
+  created_at: DateTime
+  updated_at: DateTime
+  author: User
+}
+
+input CreatePengumumanInput {
+  title: String!
+  content: String
+  author_id: ID
+  published_date: DateTime
+}
+
+input UpdatePengumumanInput {
+  title: String
+  content: String
+  author_id: ID
+  published_date: DateTime
+}
+
+type PengumumanPaginator {
+  data: [Pengumuman!]!
+  paginatorInfo: PageInfo!
+}
+
+extend type Query {
+  allPengumumans(page: Int, first: Int, search: String): PengumumanPaginator! @field(resolver: "App\\GraphQL\\Pengumuman\\Queries\\PengumumanQuery@allPengumumans")
+  pengumuman(id: ID!): Pengumuman @field(resolver: "App\\GraphQL\\Pengumuman\\Queries\\PengumumanQuery@getPengumuman")
+}
+
+extend type Mutation {
+  createPengumuman(input: CreatePengumumanInput!): Pengumuman @field(resolver: "App\\GraphQL\\Pengumuman\\Mutations\\PengumumanMutation@createPengumuman")
+  updatePengumuman(id: ID!, input: UpdatePengumumanInput!): Pengumuman @field(resolver: "App\\GraphQL\\Pengumuman\\Mutations\\PengumumanMutation@updatePengumuman")
+  deletePengumuman(id: ID!): Pengumuman @field(resolver: "App\\GraphQL\\Pengumuman\\Mutations\\PengumumanMutation@deletePengumuman")
+}

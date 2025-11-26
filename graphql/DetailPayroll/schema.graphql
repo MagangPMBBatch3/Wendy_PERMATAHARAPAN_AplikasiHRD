@@ -49,6 +49,9 @@ extend type Query {
     # cari berdasarkan staff_id
     detailPayrollByStaffId(staff_id: ID! @eq(key: "staff_id")): [DetailPayroll!]!
     @all(model: "App\\Models\\DetailPayroll")
+
+    # paginated query for listing
+    allDetailPayrollPaginate(first: Int, page: Int, search: String): DetailPayrollPaginator @paginate(model: "App\\Models\\DetailPayroll")
 }
 
 extend type Mutation {

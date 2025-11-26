@@ -14,7 +14,7 @@ const PengumumanApp = {
                 }
             `;
 
-            const response = await fetch('/graphql', {
+            const response = await fetch(window.API_URL || '/graphql', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -74,7 +74,7 @@ const PengumumanApp = {
                 }
             `;
 
-            const response = await fetch('/graphql', {
+            const response = await fetch(window.API_URL || '/graphql', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -101,7 +101,7 @@ async function deletePengumuman(id) {
     if (confirm('Are you sure?')) {
         try {
             const mutation = `mutation DeletePengumuman($id: ID!) { deletePengumuman(id: $id) { id } }`;
-            const response = await fetch('/graphql', {
+            const response = await fetch(window.API_URL || '/graphql', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

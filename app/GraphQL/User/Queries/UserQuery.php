@@ -6,35 +6,36 @@ use App\Models\User;
 
 class UserQuery
 {
-    public function getUser($_, array $args)
+    public function all($_, array $args)
     {
         $query = User::query();
 
+        // Apply search filter
         if (!empty($args['search'])) {
-            return $query->where('id', 'like', '%' . $args['search'] . '%')
-                ->orWhere('nama', 'like', '%' . $args['search'] . '%')
-                ->get();
+            $search = $args['search'];
+            $query->where(function($q) use ($search) {
+                $q->where('id', 'like', '%' . $search . '%')
+                  ->orWhere('name', 'like', '%' . $search . '%')
+                  ->orWhere('email', 'like', '%' . $search . '%');
+            });
         }
 
-                $perPage = $args['first'] ?? 10;
+        $perPage = $args['first'] ?? 10;
         $page = $args['page'] ?? 1;
 
-        $paginator = $query->paginate($perPage, ['*'],'page', $page);
+        $paginator = $query->paginate($perPage, ['*'], 'page', $page);
+        
         return [
-            'data' =>$paginator->items(),
-            'paginatorinfo' => [
+            'data' => $paginator->items(),
+            'paginatorInfo' => [
                 'hasMorePages' => $paginator->hasMorePages(),
-                'currenPage'=> $paginator->currentPage(),
-                'lastPage'=> $paginator->lastPage(),
-                'perPage'=> $paginator->perPage(),
-                'total'=> $paginator->total(),
-
+                'currentPage' => $paginator->currentPage(),
+                'lastPage' => $paginator->lastPage(),
+                'perPage' => $paginator->perPage(),
+                'total' => $paginator->total(),
             ],
         ];
-    
     }
-        
-        
 
     public function allUser($_, array $args)
     {

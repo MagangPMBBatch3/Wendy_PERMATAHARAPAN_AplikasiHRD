@@ -1,158 +1,198 @@
-// Level List Page
-document.addEventListener('DOMContentLoaded', function() {
-    const tableBody = document.getElementById('levelTableBody');
-    const searchBtn = document.getElementById('searchBtn');
-    const searchInput = document.getElementById('searchInput');
-    const currentPageSpan = document.getElementById('currentPage');
-    const prevPageBtn = document.getElementById('prevPageBtn');
-    const nextPageBtn = document.getElementById('nextPageBtn');
+const API_URL = '/graphql';
+let currentPage = 1;
+let perPage = 10;
+let searchValue = '';
 
-    let currentPage = 1;
-    let totalPages = 1;
+async function loadDataPaginate(page = 1) {
+    currentPage = page;
+    perPage = document.getElementById('perPage').value || 10;
+    searchValue = document.getElementById('searchInput').value || '';
 
-    loadLevel(currentPage);
+    const variables = { first: parseInt(perPage), page: currentPage, search: searchValue };
 
-    if (searchBtn) {
-        searchBtn.addEventListener('click', function() {
-            currentPage = 1;
-            loadLevel(currentPage);
-        });
-    }
-
-    if (prevPageBtn) {
-        prevPageBtn.addEventListener('click', function() {
-            if (currentPage > 1) {
-                currentPage--;
-                loadLevel(currentPage);
-            }
-        });
-    }
-
-    if (nextPageBtn) {
-        nextPageBtn.addEventListener('click', function() {
-            if (currentPage < totalPages) {
-                currentPage++;
-                loadLevel(currentPage);
-            }
-        });
-    }
-
-    async function loadLevel(page = 1) {
-        try {
-            showLoading(tableBody);
-            const search = searchInput ? searchInput.value : '';
-
-            const query = `
-                query GetAllLevel($page: Int, $search: String) {
-                    allLevel(page: $page, search: $search) {
-                        data {
-                            id
-                            name
-                            description
-                            created_at
-                            updated_at
-                        }
-                        paginatorInfo {
-                            currentPage
-                            lastPage
-                        }
-                    }
+    const query = `
+        query($first: Int, $page: Int, $search: String) {
+            allLevelPaginate(first: $first, page: $page, search: $search) {
+                data {
+                    id
+                    name
+                    description
+                    created_at
                 }
-            `;
-
-            const response = await fetch('/graphql', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || ''
-                },
-                body: JSON.stringify({
-                    query,
-                    variables: { page, search }
-                })
-            });
-
-            const result = await response.json();
-            const levelData = result.data.allLevel;
-
-            if (levelData && levelData.data && levelData.data.length > 0) {
-                totalPages = levelData.paginatorInfo.lastPage;
-                currentPage = levelData.paginatorInfo.currentPage;
-                displayLevel(levelData.data);
-                updatePagination();
-            } else {
-                tableBody.innerHTML = '<tr><td colspan="5" class="text-center py-8 text-gray-500">No levels found.</td></tr>';
+                pageInfo {
+                    currentPage
+                    total
+                    hasPreviousPage
+                    hasMorePages
+                }
             }
-        } catch (error) {
-            console.error('Error loading level:', error);
-            tableBody.innerHTML = '<tr><td colspan="5" class="text-center py-8 text-red-500">Error loading levels.</td></tr>';
         }
+    `;
+
+    const res = await fetch(API_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ query, variables })
+    });
+    const data = await res.json();
+
+    const tbody = document.getElementById("dataLevel");
+    tbody.innerHTML = "";
+
+    const result = data.data.allLevelPaginate;
+    const items = result.data;
+    const pageInfo = result.pageInfo;
+
+    if (!items || items.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="5" class="text-center p-2">Data tidak ditemukan</td></tr>';
+        document.getElementById("pageInfo").innerText = "Tidak ada";
+        return;
     }
 
-    function displayLevel(levels) {
-        tableBody.innerHTML = '';
-        levels.forEach(l => {
-            const row = document.createElement('tr');
-            row.className = 'border-b hover:bg-gray-50';
-            row.innerHTML = `
-                <td class="px-6 py-4 text-sm font-medium text-gray-900">${l.id}</td>
-                <td class="px-6 py-4 text-sm text-gray-700">${l.name}</td>
-                <td class="px-6 py-4 text-sm text-gray-700">${l.description || '-'}</td>
-                <td class="px-6 py-4 text-sm text-gray-700">${formatDate(l.created_at)}</td>
-                <td class="px-6 py-4 text-sm space-x-2">
-                    <a href="/level/${l.id}/edit" class="text-green-600 hover:text-green-800">Edit</a>
-                    <button class="text-red-600 hover:text-red-800" onclick="deleteLevel(${l.id})">Delete</button>
+    // Render baris tabel
+    items.forEach((item, index) => {
+        tbody.innerHTML += `
+            <tr>
+                <td class="p-2">${item.id}</td>
+                <td class="p-2">${item.name}</td>
+                <td class="p-2">${item.description || '-'}</td>
+                <td class="p-2">${formatDate(item.created_at)}</td>
+                <td class="p-2 text-end">
+                    <button class="btn btn-sm btn-warning" onclick="openEditModal('${item.id}', '${item.name}', '${item.description || ''}')">Edit</button>
+                    <button class="btn btn-sm btn-danger" onclick="hapusLevel('${item.id}')">Hapus</button>
                 </td>
-            `;
-            tableBody.appendChild(row);
-        });
-    }
+            </tr>
+        `;
+    });
 
-    function updatePagination() {
-        if (currentPageSpan) currentPageSpan.textContent = `Page ${currentPage} of ${totalPages}`;
-        if (prevPageBtn) prevPageBtn.disabled = currentPage <= 1;
-        if (nextPageBtn) nextPageBtn.disabled = currentPage >= totalPages;
-    }
-    // expose loader expected by Blade
-    window.loadLevelData = function(page = 1) { return (typeof loadLevel === 'function') ? loadLevel(page) : null; };
+    // Update info halaman
+    document.getElementById("pageInfo").innerText = `Halaman ${pageInfo.currentPage} dari ${pageInfo.total}`;
+
+    // Update tombol prev/next
+    document.getElementById("prevBtn").disabled = !pageInfo.hasPreviousPage;
+    document.getElementById("nextBtn").disabled = !pageInfo.hasMorePages;
+}
+
+// Pencarian
+function searchLevel() {
+    loadDataPaginate();
+}
+
+// Pagination tombol
+function prevPage() {
+    if (currentPage > 1) loadDataPaginate(currentPage - 1);
+}
+
+function nextPage() {
+    loadDataPaginate(currentPage + 1);
+}
+
+// Hapus data
+async function hapusLevel(id) {
+    if (!confirm("Yakin ingin menghapus data ini?")) return;
+
+    const mutation = `
+        mutation($id: ID!) {
+            deleteLevel(id: $id)
+        }
+    `;
+
+    await fetch(API_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ query: mutation, variables: { id } })
+    });
+
+    loadDataPaginate(currentPage);
+}
+
+// Load otomatis saat halaman dibuka
+document.addEventListener("DOMContentLoaded", () => {
+    loadDataPaginate();
 });
 
-async function deleteLevel(id) {
-    if (confirm('Are you sure?')) {
-        try {
-            const mutation = `mutation DeleteLevel($id: ID!) { deleteLevel(id: $id) { id } }`;
-            const response = await fetch('/graphql', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || ''
-                },
-                body: JSON.stringify({ query: mutation, variables: { id } })
-            });
-            const result = await response.json();
-            if (result.data) {
-                showNotification('Deleted successfully!', 'success');
-                setTimeout(() => location.reload(), 1000);
-            }
-        } catch (error) {
-            showNotification('Failed to delete.', 'error');
-        }
-    }
+// Modal Add
+function openAddModal() {
+    document.getElementById('modalAdd').classList.remove('hidden');
 }
 
+function closeAddModal() {
+    document.getElementById('modalAdd').classList.add('hidden');
+    document.getElementById('addName').value = '';
+    document.getElementById('addDescription').value = '';
+}
+
+async function createLevel() {
+    const name = document.getElementById('addName').value;
+    const description = document.getElementById('addDescription').value;
+    if (!name) return alert("Name is required");
+
+    const mutation = `
+        mutation($input: CreateLevelInput!) {
+            createLevel(input: $input) { id }
+        }
+    `;
+    const variables = {
+        input: {
+            name,
+            description
+        }
+    };
+    await fetch(API_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ query: mutation, variables })
+    });
+    closeAddModal();
+    loadDataPaginate(currentPage);
+}
+
+// Modal Edit
+function openEditModal(id, name, description) {
+    document.getElementById('editLevelId').value = id;
+    document.getElementById('editName').value = name;
+    document.getElementById('editDescription').value = description;
+    document.getElementById('modalEdit').classList.remove('hidden');
+}
+
+function closeEditModal() {
+    document.getElementById('modalEdit').classList.add('hidden');
+}
+
+async function updateLevel() {
+    const id = document.getElementById('editLevelId').value;
+    const name = document.getElementById('editName').value;
+    const description = document.getElementById('editDescription').value;
+    if (!name) return alert("Name is required");
+
+    const mutation = `
+        mutation($input: UpdateLevelInput!) {
+            updateLevel(input: $input) { id }
+        }
+    `;
+    const variables = {
+        input: {
+            id: parseInt(id),
+            name,
+            description
+        }
+    };
+    await fetch(API_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ query: mutation, variables })
+    });
+    closeEditModal();
+    loadDataPaginate(currentPage);
+}
+
+// Utility function
 function formatDate(dateString) {
     if (!dateString) return 'N/A';
-    return new Date(dateString).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
-}
-
-function showNotification(message, type = 'success') {
-    const notification = document.createElement('div');
-    notification.className = `fixed top-4 right-4 px-6 py-3 rounded-md text-white z-50 ${type === 'success' ? 'bg-green-500' : 'bg-red-500'}`;
-    notification.textContent = message;
-    document.body.appendChild(notification);
-    setTimeout(() => notification.remove(), 3000);
-}
-
-function showLoading(element) {
-    element.innerHTML = '<tr><td colspan="5" class="px-6 py-8 text-center"><div class="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500 mx-auto"></div></td></tr>';
+    const date = new Date(dateString);
+    return date.toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: 'short',
+        day: 'numeric'
+    });
 }

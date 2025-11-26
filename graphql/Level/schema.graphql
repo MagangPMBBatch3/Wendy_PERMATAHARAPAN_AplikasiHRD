@@ -6,6 +6,11 @@ type Level {
     deleted_at: DateTime
 }
 
+type LevelPaginator {
+    data: [Level!]!
+    paginatorInfo: PageInfo!
+}
+
 input CreateLevelInput {
     nama: String!
 }
@@ -17,27 +22,30 @@ input UpdateLevelInput {
 extend type Query {
     #ambil semua level(yg blm hapus)
     allLevel: [Level!]!
-    @all(model: "App\\Models\\Level\\Level")
+    @all(model: "App\\Models\\Level")
     #ambil semua level yang di soft delete
     allLevelArsip: [Level!]!
     @field(resolver: "App\\GraphQL\\Level\\Queries\\LevelQuery@allArsip")
     #cari
     level(id: ID! @eq(key:"id")): Level
-    @find(model: "App\\Models\\Level\\Level")
+    @find(model: "App\\Models\\Level")
     #cari (nama)
     levelByNama(nama: String! @where(operator: "like", key: "nama")): [Level!]!
-    @all(model: "App\\Models\\Level\\Level")
+    @all(model: "App\\Models\\Level")
+
+    # paginated query for listing
+    allLevelPaginate(first: Int, page: Int, search: String): LevelPaginator @paginate(model: "App\\Models\\Level", defaultCount: 10)
 }
 
 extend type Mutation {
-    createLevel(input: CreateLevelInput! @spread): Level @create(model: "App\\Models\\Level\\Level")
+    createLevel(input: CreateLevelInput! @spread): Level @create(model: "App\\Models\\Level")
 
     updateLevel(id: ID! @eq(key: "id"),
     input: UpdateLevelInput! @spread): Level
-    @update(model: "App\\Models\\Level\\Level")
+    @update(model: "App\\Models\\Level")
 
     deleteLevel(id: ID! @eq(key: "id")): Level
-    @delete(model: "App\\Models\\Level\\Level")
+    @delete(model: "App\\Models\\Level")
 
     restoreLevel(id:ID! @eq(key: "id")): Level
     @field(resolver: "App\\GraphQL\\Level\\Mutations\\LevelMutation@restore")

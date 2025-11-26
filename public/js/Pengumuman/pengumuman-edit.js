@@ -5,7 +5,7 @@ document.addEventListener('DOMContentLoaded', async function() {
 
     if (form) {
         const query = `query GetPengumuman($id: ID!) { pengumuman(id: $id) { id title content date } }`;
-        const response = await fetch('/graphql', {
+        const response = await fetch(window.API_URL || '/graphql', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

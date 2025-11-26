@@ -30,6 +30,11 @@ type PageInfo {
     total: Int!
 }
 
+type UserPaginator {
+    data: [User!]!
+    paginatorInfo: PageInfo!
+}
+
 type BagianPaginator {
     data: [Bagian!]!
     paginatorInfo: PageInfo!
@@ -47,7 +52,7 @@ extend type Query {
        first: Int
        page: Int
     ): UserPaginator!
-    @field(resolver: "App\\GraphQL\\Queries\\UserQuery@all")
+    @field(resolver: "App\\GraphQL\\User\\Queries\\UserQuery@all")
     # cari berdasarkan id
     user(id: ID! @eq(key: "id")): User
     @find(model: "App\\Models\\User")

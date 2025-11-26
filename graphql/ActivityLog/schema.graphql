@@ -1,0 +1,56 @@
+type ActivityLog {
+    id: ID!
+    user_id: ID!
+    action: String!
+    description: String
+    timestamp: DateTime!
+    created_at: DateTime
+    updated_at: DateTime
+    deleted_at: DateTime
+    user: User
+}
+
+input CreateActivityLogInput {
+    user_id: ID!
+    action: String!
+    description: String
+    timestamp: DateTime!
+}
+
+input UpdateActivityLogInput {
+    user_id: ID
+    action: String
+    description: String
+    timestamp: DateTime
+}
+
+extend type Query {
+    # ambil semua activity log (yg blm hapus)
+    allActivityLog: [ActivityLog!]!
+    @all(model: "App\\Models\\ActivityLog")
+
+    # cari berdasarkan id
+    activityLog(id: ID! @eq(key: "id")): ActivityLog
+    @find(model: "App\\Models\\ActivityLog")
+
+    # cari berdasarkan user_id
+    activityLogByUserId(user_id: ID! @eq(key: "user_id")): [ActivityLog!]!
+    @all(model: "App\\Models\\ActivityLog")
+}
+
+extend type Mutation {
+    createActivityLog(input: CreateActivityLogInput! @spread): ActivityLog @create(model: "App\\Models\\ActivityLog")
+
+    updateActivityLog(id: ID! @eq(key: "id"),
+    input: UpdateActivityLogInput! @spread): ActivityLog
+    @update(model: "App\\Models\\ActivityLog")
+
+    deleteActivityLog(id: ID! @eq(key: "id")): ActivityLog
+    @delete(model: "App\\Models\\ActivityLog")
+
+    restoreActivityLog(id: ID!): ActivityLog
+    @field(resolver: "App\\GraphQL\\ActivityLog\\Mutations\\ActivityLogMutation@restore")
+
+    forceDeleteActivityLog(id: ID!): ActivityLog
+    @field(resolver: "App\\GraphQL\\ActivityLog\\Mutations\\ActivityLogMutation@forceDelete")
+}

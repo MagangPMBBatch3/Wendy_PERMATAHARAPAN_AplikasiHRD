@@ -1,405 +1,347 @@
-// Pengurangan GraphQL API functions
-const PenguranganAPI = {
-    // Fetch all pengurangan with pagination
-    async getAllPengurangan(page = 1, search = '', date = '') {
-        const query = `
-            query GetPengurangan($page: Int, $search: String, $date: String) {
-                allPengurangan(page: $page, search: $search, date: $date) {
-                    data {
-                        id
-                        staff_id
-                        dt_payroll_id
-                        keterangan
-                        jumlah
-                        tanggal
-                        created_at
-                        updated_at
-                        staff {
-                            id
-                            nama
-                        }
-                        detailPayroll {
-                            id
-                            periode
-                        }
-                    }
-                    paginatorInfo {
-                        currentPage
-                        lastPage
-                        total
-                        perPage
-                    }
-                }
-            }
-        `;
+const API_URL = '/graphql';
 
-        try {
-            const response = await fetch('/graphql', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-                },
-                body: JSON.stringify({
-                    query,
-                    variables: { page, search, date }
-                })
-            });
+let currentPage = 1;
+let perPage = 10;
+let totalPage = 1;
+let searchValue = '';
 
-            const result = await response.json();
-            return result.data.allPengurangan;
-        } catch (error) {
-            console.error('Error fetching pengurangan:', error);
-            throw error;
-        }
-    },
-
-    // Fetch single pengurangan by ID
-    async getPengurangan(id) {
-        const query = `
-            query GetPengurangan($id: ID!) {
-                pengurangan(id: $id) {
-                    id
-                    staff_id
-                    dt_payroll_id
-                    keterangan
-                    jumlah
-                    tanggal
-                    created_at
-                    updated_at
-                    staff {
-                        id
-                        nama
-                    }
-                    detailPayroll {
-                        id
-                        periode
-                    }
-                }
-            }
-        `;
-
-        try {
-            const response = await fetch('/graphql', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-                },
-                body: JSON.stringify({
-                    query,
-                    variables: { id }
-                })
-            });
-
-            const result = await response.json();
-            return result.data.pengurangan;
-        } catch (error) {
-            console.error('Error fetching pengurangan:', error);
-            throw error;
-        }
-    },
-
-    // Create new pengurangan
-    async createPengurangan(penguranganData) {
-        const mutation = `
-            mutation CreatePengurangan($input: CreatePenguranganInput!) {
-                createPengurangan(input: $input) {
-                    id
-                    staff_id
-                    dt_payroll_id
-                    keterangan
-                    jumlah
-                    tanggal
-                    created_at
-                    updated_at
-                }
-            }
-        `;
-
-        try {
-            const response = await fetch('/graphql', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-                },
-                body: JSON.stringify({
-                    query: mutation,
-                    variables: {
-                        input: penguranganData
-                    }
-                })
-            });
-
-            const result = await response.json();
-            return result.data.createPengurangan;
-        } catch (error) {
-            console.error('Error creating pengurangan:', error);
-            throw error;
-        }
-    },
-
-    // Update pengurangan
-    async updatePengurangan(id, penguranganData) {
-        const mutation = `
-            mutation UpdatePengurangan($id: ID!, $input: UpdatePenguranganInput!) {
-                updatePengurangan(id: $id, input: $input) {
-                    id
-                    staff_id
-                    dt_payroll_id
-                    keterangan
-                    jumlah
-                    tanggal
-                    updated_at
-                }
-            }
-        `;
-
-        try {
-            const response = await fetch('/graphql', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-                },
-                body: JSON.stringify({
-                    query: mutation,
-                    variables: {
-                        id,
-                        input: penguranganData
-                    }
-                })
-            });
-
-            const result = await response.json();
-            return result.data.updatePengurangan;
-        } catch (error) {
-            console.error('Error updating pengurangan:', error);
-            throw error;
-        }
-    },
-
-    // Delete pengurangan
-    async deletePengurangan(id) {
-        const mutation = `
-            mutation DeletePengurangan($id: ID!) {
-                deletePengurangan(id: $id) {
-                    id
-                }
-            }
-        `;
-
-        try {
-            const response = await fetch('/graphql', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-                },
-                body: JSON.stringify({
-                    query: mutation,
-                    variables: { id }
-                })
-            });
-
-            const result = await response.json();
-            return result.data.deletePengurangan;
-        } catch (error) {
-            console.error('Error deleting pengurangan:', error);
-            throw error;
-        }
-    },
-
-    // Restore pengurangan
-    async restorePengurangan(id) {
-        const mutation = `
-            mutation RestorePengurangan($id: ID!) {
-                restorePengurangan(id: $id) {
-                    id
-                }
-            }
-        `;
-
-        try {
-            const response = await fetch('/graphql', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-                },
-                body: JSON.stringify({
-                    query: mutation,
-                    variables: { id }
-                })
-            });
-
-            const result = await response.json();
-            return result.data.restorePengurangan;
-        } catch (error) {
-            console.error('Error restoring pengurangan:', error);
-            throw error;
-        }
+async function fetchStaffs() {
+  const query = `
+    query {
+      staffs {
+        id
+        nama
+      }
     }
-};
-
-// Utility functions
-function formatCurrency(amount) {
-    if (!amount) return 'Rp 0';
-    return new Intl.NumberFormat('id-ID', {
-        style: 'currency',
-        currency: 'IDR',
-        minimumFractionDigits: 0,
-        maximumFractionDigits: 2
-    }).format(amount);
+  `;
+  const response = await fetch(API_URL, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ query })
+  });
+  const result = await response.json();
+  return result.data.staffs;
 }
 
-function formatDate(dateString) {
-    if (!dateString) return 'N/A';
-    const date = new Date(dateString);
-    return date.toLocaleDateString('en-US', {
-        year: 'numeric',
-        month: 'short',
-        day: 'numeric'
-    });
+async function fetchDetailPayrolls() {
+  const query = `
+    query {
+      detailPayrolls {
+        id
+        periode
+      }
+    }
+  `;
+  const response = await fetch(API_URL, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ query })
+  });
+  const result = await response.json();
+  return result.data.detailPayrolls;
 }
 
-function showNotification(message, type = 'success') {
-    // Create notification element
-    const notification = document.createElement('div');
-    notification.className = `fixed top-4 right-4 px-6 py-3 rounded-md text-white z-50 ${
-        type === 'success' ? 'bg-green-500' :
-        type === 'error' ? 'bg-red-500' :
-        'bg-blue-500'
-    }`;
-    notification.textContent = message;
-
-    document.body.appendChild(notification);
-
-    // Remove after 3 seconds
-    setTimeout(() => {
-        notification.remove();
-    }, 3000);
+async function fetchData() {
+  const query = `
+    query ($page: Int, $limit: Int, $search: String) {
+      pengurangans(page: $page, limit: $limit, search: $search) {
+        data {
+          id
+          staff {
+            nama
+          }
+          dt_payroll {
+            periode
+          }
+          tanggal
+          jumlah
+          keterangan
+        }
+        paginatorInfo {
+          currentPage
+          lastPage
+        }
+      }
+    }
+  `;
+  const variables = {
+    page: currentPage,
+    limit: perPage,
+    search: searchValue
+  };
+  const response = await fetch(API_URL, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ query, variables })
+  });
+  const result = await response.json();
+  return result.data.pengurangans;
 }
 
-function showLoading(element) {
-    element.innerHTML = `
-        <div class="flex justify-center items-center py-8">
-            <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
-            <span class="ml-2 text-gray-600">Loading...</span>
-        </div>
+function openAddModal() {
+  document.getElementById('modalAdd').classList.remove('hidden');
+  loadStaffOptions('add_staff_id');
+  loadDetailPayrollOptions('add_dt_payroll_id');
+  clearAddForm();
+}
+
+function closeAddModal() {
+  document.getElementById('modalAdd').classList.add('hidden');
+}
+
+function openEditModal() {
+  document.getElementById('modalEdit').classList.remove('hidden');
+}
+
+function closeEditModal() {
+  document.getElementById('modalEdit').classList.add('hidden');
+}
+
+function clearAddForm() {
+  document.getElementById('formAdd').reset();
+}
+
+async function loadStaffOptions(selectId) {
+  const staffs = await fetchStaffs();
+  const select = document.getElementById(selectId);
+  select.innerHTML = '<option value="">Select staff</option>';
+  staffs.forEach(staff => {
+    const option = document.createElement('option');
+    option.value = staff.id;
+    option.textContent = staff.nama;
+    select.appendChild(option);
+  });
+}
+
+async function loadDetailPayrollOptions(selectId) {
+  const detailPayrolls = await fetchDetailPayrolls();
+  const select = document.getElementById(selectId);
+  select.innerHTML = '<option value="">Select payroll period</option>';
+  detailPayrolls.forEach(dp => {
+    const option = document.createElement('option');
+    option.value = dp.id;
+    option.textContent = dp.periode;
+    select.appendChild(option);
+  });
+}
+
+function renderTable(data) {
+  const tbody = document.getElementById('dataTableBody');
+  tbody.innerHTML = '';
+
+  if(data.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="7" class="text-center py-8 text-gray-500">No records found</td></tr>';
+    return;
+  }
+
+  data.forEach(item => {
+    const tr = document.createElement('tr');
+
+    tr.innerHTML = `
+      <td class="px-6 py-4 whitespace-nowrap">${item.id}</td>
+      <td class="px-6 py-4 whitespace-nowrap">${item.staff ? item.staff.nama : ''}</td>
+      <td class="px-6 py-4 whitespace-nowrap">${item.dt_payroll ? item.dt_payroll.periode : ''}</td>
+      <td class="px-6 py-4 whitespace-nowrap">${item.tanggal}</td>
+      <td class="px-6 py-4 whitespace-nowrap">Rp ${item.jumlah.toFixed(2)}</td>
+      <td class="px-6 py-4 whitespace-nowrap">${item.keterangan}</td>
+      <td class="px-6 py-4 whitespace-nowrap space-x-2">
+        <button onclick="editRecord(${item.id})" class="text-blue-600 hover:underline">Edit</button>
+        <button onclick="deleteRecord(${item.id})" class="text-red-600 hover:underline">Delete</button>
+      </td>
     `;
+    tbody.appendChild(tr);
+  });
 }
 
-function hideLoading(element) {
-    element.innerHTML = '';
+async function loadData() {
+  try {
+    const result = await fetchData();
+    renderTable(result.data);
+    currentPage = result.paginatorInfo.currentPage;
+    totalPage = result.paginatorInfo.lastPage;
+    updatePaginationRange();
+  } catch (error) {
+    console.error('Error loading data:', error);
+  }
 }
 
-// Index page functions
-function renderPenguranganTable(penguranganList) {
-    const tbody = document.getElementById('deductionsTableBody');
-    tbody.innerHTML = '';
-
-    if (penguranganList.length === 0) {
-        document.getElementById('emptyState').classList.remove('hidden');
-        return;
-    }
-
-    document.getElementById('emptyState').classList.add('hidden');
-
-    penguranganList.forEach(pengurangan => {
-        const row = document.createElement('tr');
-        row.className = 'hover:bg-gray-50';
-        row.innerHTML = `
-            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">${pengurangan.id}</td>
-            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${pengurangan.staff?.nama || 'N/A'}</td>
-            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${pengurangan.detailPayroll?.periode || 'N/A'}</td>
-            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${formatDate(pengurangan.tanggal)}</td>
-            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${formatCurrency(pengurangan.jumlah)}</td>
-            <td class="px-6 py-4 text-sm text-gray-900 max-w-xs truncate" title="${pengurangan.keterangan}">${pengurangan.keterangan}</td>
-            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                <div class="flex space-x-2">
-                    <a href="/pengurangan/${pengurangan.id}" class="text-blue-600 hover:text-blue-900">View</a>
-                    <a href="/pengurangan/${pengurangan.id}/edit" class="text-indigo-600 hover:text-indigo-900">Edit</a>
-                    <button onclick="deletePengurangan(${pengurangan.id})" class="text-red-600 hover:text-red-900">Delete</button>
-                </div>
-            </td>
-        `;
-        tbody.appendChild(row);
-    });
+function updatePaginationRange() {
+  document.getElementById('currentPage').textContent = `Page ${currentPage} of ${totalPage}`;
+  document.getElementById('prevPageBtn').disabled = currentPage === 1;
+  document.getElementById('nextPageBtn').disabled = currentPage === totalPage;
 }
 
-function renderPagination(paginatorInfo) {
-    const container = document.getElementById('paginationContainer');
-    container.innerHTML = '';
-
-    if (paginatorInfo.lastPage <= 1) return;
-
-    const pagination = document.createElement('div');
-    pagination.className = 'flex items-center justify-between border-t border-gray-200 bg-white px-4 py-3 sm:px-6';
-
-    let paginationHTML = '<div class="flex items-center space-x-2">';
-
-    // Previous button
-    if (paginatorInfo.currentPage > 1) {
-        paginationHTML += `<button onclick="loadPengurangan(${paginatorInfo.currentPage - 1})" class="relative inline-flex items-center px-2 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-l-md hover:bg-gray-50">Previous</button>`;
-    }
-
-    // Page numbers
-    for (let i = Math.max(1, paginatorInfo.currentPage - 2); i <= Math.min(paginatorInfo.lastPage, paginatorInfo.currentPage + 2); i++) {
-        const activeClass = i === paginatorInfo.currentPage ? 'bg-blue-50 border-blue-500 text-blue-600' : 'bg-white border-gray-300 text-gray-500 hover:bg-gray-50';
-        paginationHTML += `<button onclick="loadPengurangan(${i})" class="relative inline-flex items-center px-4 py-2 text-sm font-medium ${activeClass} border">${i}</button>`;
-    }
-
-    // Next button
-    if (paginatorInfo.currentPage < paginatorInfo.lastPage) {
-        paginationHTML += `<button onclick="loadPengurangan(${paginatorInfo.currentPage + 1})" class="relative inline-flex items-center px-2 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-r-md hover:bg-gray-50">Next</button>`;
-    }
-
-    paginationHTML += '</div>';
-    pagination.innerHTML = paginationHTML;
-    container.appendChild(pagination);
-}
-
-async function deletePengurangan(id) {
-    if (!confirm('Are you sure you want to delete this deduction?')) {
-        return;
-    }
-
-    try {
-        await PenguranganAPI.deletePengurangan(id);
-        showNotification('Deduction deleted successfully!', 'success');
-        loadPengurangan(); // Reload the list
-    } catch (error) {
-        console.error('Error deleting deduction:', error);
-        showNotification('Failed to delete deduction.', 'error');
-    }
-}
-
-// Initialize on page load
-document.addEventListener('DOMContentLoaded', function() {
-    loadPengurangan(1);
+document.getElementById('searchBtn').addEventListener('click', () => {
+  searchValue = document.getElementById('searchInput').value;
+  currentPage = 1;
+  loadData();
 });
 
-// expose loader for direct calls
-window.loadPenguranganData = function(page = 1) {
-    return loadPengurangan(page);
-};
+document.getElementById('prevPageBtn').addEventListener('click', () => {
+  if (currentPage > 1) {
+    currentPage--;
+    loadData();
+  }
+});
 
-// Main loader function
-async function loadPengurangan(page = 1) {
-    try {
-        const loadingState = document.getElementById('loadingState');
-        if (loadingState) loadingState.style.display = 'flex';
+document.getElementById('nextPageBtn').addEventListener('click', () => {
+  if (currentPage < totalPage) {
+    currentPage++;
+    loadData();
+  }
+});
 
-        const result = await PenguranganAPI.getAllPengurangan(page);
-        renderPenguranganTable(result.data);
-        renderPagination(result.paginatorInfo);
+async function submitAddForm(event) {
+  event.preventDefault();
+  const data = {
+    staff_id: document.getElementById('add_staff_id').value,
+    dt_payroll_id: document.getElementById('add_dt_payroll_id').value,
+    tanggal: document.getElementById('add_tanggal').value,
+    jumlah: parseFloat(document.getElementById('add_jumlah').value),
+    keterangan: document.getElementById('add_keterangan').value,
+  };
 
-        if (loadingState) loadingState.style.display = 'none';
-    } catch (error) {
-        console.error('Error loading pengurangan:', error);
-        const loadingState = document.getElementById('loadingState');
-        if (loadingState) loadingState.innerHTML = '<div class="text-red-500">Error loading deductions.</div>';
+  const mutation = `
+    mutation($input: CreatePenguranganInput!) {
+      createPengurangan(input: $input) {
+        id
+      }
     }
+  `;
+  const variables = { input: data };
+  try {
+    const response = await fetch(API_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ query: mutation, variables })
+    });
+    const result = await response.json();
+    if (result.errors) {
+      alert('Failed to create deduction.');
+    } else {
+      alert('Deduction created successfully.');
+      closeAddModal();
+      loadData();
+    }
+  } catch (error) {
+    console.error('Create error:', error);
+  }
 }
+
+async function editRecord(id) {
+  // Fetch single record data
+  const query = `
+    query($id:Int!) {
+      pengurangan(id:$id) {
+        id
+        staff_id
+        dt_payroll_id
+        tanggal
+        jumlah
+        keterangan
+      }
+    }
+  `;
+  const variables = { id };
+  try {
+    const response = await fetch(API_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ query, variables })
+    });
+    const result = await response.json();
+    if (result.data.pengurangan) {
+      // populate edit modal form
+      document.getElementById('edit_id').value = result.data.pengurangan.id;
+      document.getElementById('edit_staff_id').value = result.data.pengurangan.staff_id;
+      document.getElementById('edit_dt_payroll_id').value = result.data.pengurangan.dt_payroll_id;
+      document.getElementById('edit_tanggal').value = result.data.pengurangan.tanggal;
+      document.getElementById('edit_jumlah').value = result.data.pengurangan.jumlah;
+      document.getElementById('edit_keterangan').value = result.data.pengurangan.keterangan;
+      openEditModal();
+      // load options for select inputs if needed
+      loadStaffOptions('edit_staff_id');
+      loadDetailPayrollOptions('edit_dt_payroll_id');
+    } else {
+      alert('Record not found');
+    }
+  } catch (error) {
+    console.error('Error fetching record:', error);
+  }
+}
+
+async function submitEditForm(event) {
+  event.preventDefault();
+  const data = {
+    id: parseInt(document.getElementById('edit_id').value),
+    staff_id: document.getElementById('edit_staff_id').value,
+    dt_payroll_id: document.getElementById('edit_dt_payroll_id').value,
+    tanggal: document.getElementById('edit_tanggal').value,
+    jumlah: parseFloat(document.getElementById('edit_jumlah').value),
+    keterangan: document.getElementById('edit_keterangan').value,
+  };
+
+  const mutation = `
+    mutation($id: Int!, $input: UpdatePenguranganInput!) {
+      updatePengurangan(id: $id, input: $input) {
+        id
+      }
+    }
+  `;
+
+  const variables = { id: data.id, input: data };
+
+  try {
+    const response = await fetch(API_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ query: mutation, variables })
+    });
+    const result = await response.json();
+    if (result.errors) {
+      alert('Failed to update deduction.');
+    } else {
+      alert('Deduction updated successfully.');
+      closeEditModal();
+      loadData();
+    }
+  } catch (error) {
+    console.error('Update error:', error);
+  }
+}
+
+async function deleteRecord(id) {
+  if(!confirm('Are you sure you want to delete this deduction?')) return;
+
+  const mutation = `
+    mutation($id: Int!) {
+      deletePengurangan(id: $id)
+    }
+  `;
+
+  const variables = { id };
+
+  try {
+    const response = await fetch(API_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ query: mutation, variables })
+    });
+    const result = await response.json();
+    if (result.errors) {
+      alert('Failed to delete deduction.');
+    } else {
+      alert('Deduction deleted successfully.');
+      loadData();
+    }
+  } catch (error) {
+    console.error('Delete error:', error);
+  }
+}
+
+document.getElementById('formAdd').addEventListener('submit', submitAddForm);
+document.getElementById('formEdit').addEventListener('submit', submitEditForm);
+
+window.onload = function () {
+  loadData();
+};
