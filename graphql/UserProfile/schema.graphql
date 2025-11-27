@@ -9,8 +9,8 @@ type UserProfile {
     created_at: DateTime
     updated_at: DateTime
     deleted_at: DateTime
-    user: User
-    staff: Staff
+    user: User @belongsTo
+    staff: Staff @belongsTo
 }
 
 input CreateUserProfileInput {
@@ -31,10 +31,23 @@ input UpdateUserProfileInput {
     foto: String
 }
 
+type UserProfilePaginator {
+    data: [UserProfile!]!
+    paginatorInfo: PageInfo!
+}
+
 extend type Query {
     # ambil semua user profile (yg blm hapus)
     allUserProfile: [UserProfile!]!
     @all(model: "App\\Models\\UserProfile")
+
+    # query dengan paginasi dan search (matches User schema)
+    allUserProfilePaginate(
+        search: String
+        first: Int
+        page: Int
+    ): UserProfilePaginator!
+    @field(resolver: "App\\GraphQL\\UserProfile\\Queries\\UserProfileQuery@all")
 
     # cari berdasarkan id
     userProfile(id: ID! @eq(key: "id")): UserProfile
@@ -50,10 +63,13 @@ extend type Query {
 }
 
 extend type Mutation {
-    createUserProfile(input: CreateUserProfileInput! @spread): UserProfile @create(model: "App\\Models\\UserProfile")
+    createUserProfile(input: CreateUserProfileInput! @spread): UserProfile
+    @create(model: "App\\Models\\UserProfile")
 
-    updateUserProfile(id: ID! @eq(key: "id"),
-    input: UpdateUserProfileInput! @spread): UserProfile
+    updateUserProfile(
+        id: ID! @eq(key: "id"),
+        input: UpdateUserProfileInput! @spread
+    ): UserProfile
     @update(model: "App\\Models\\UserProfile")
 
     deleteUserProfile(id: ID! @eq(key: "id")): UserProfile

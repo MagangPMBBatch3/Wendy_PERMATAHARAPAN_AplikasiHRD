@@ -23,13 +23,13 @@
                     <th class="px-6 py-4 text-left text-sm font-semibold">ID</th>
                     <th class="px-6 py-4 text-left text-sm font-semibold">User</th>
                     <th class="px-6 py-4 text-left text-sm font-semibold">Action</th>
-                    <th class="px-6 py-4 text-left text-sm font-semibold">Description</th>
+                    <th class="px-6 py-4 text-left text-sm font-semibold">Route</th>
+                    <th class="px-6 py-4 text-left text-sm font-semibold">IP Address</th>
                     <th class="px-6 py-4 text-left text-sm font-semibold">Timestamp</th>
-                    <th class="px-6 py-4 text-left text-sm font-semibold">Actions</th>
                 </tr>
             </thead>
-            <tbody id="dataTableBody">
-                <tr><td colspan="6" class="text-center py-8 text-gray-500">Loading...</td></tr>
+            <tbody id="activityLogTableBody">
+                <tr><td colspan="5" class="text-center py-8 text-gray-500">Loading...</td></tr>
             </tbody>
         </table>
     </div>

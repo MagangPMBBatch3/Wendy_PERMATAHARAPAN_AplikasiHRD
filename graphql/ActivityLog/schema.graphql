@@ -4,10 +4,10 @@ type ActivityLog {
     action: String!
     description: String
     timestamp: DateTime!
-    created_at: DateTime
-    updated_at: DateTime
-    deleted_at: DateTime
-    user: User
+    ip_address: String
+    user_agent: String
+    route_name: String
+    user: User @belongsTo
 }
 
 input CreateActivityLogInput {
@@ -28,6 +28,14 @@ extend type Query {
     # ambil semua activity log (yg blm hapus)
     allActivityLog: [ActivityLog!]!
     @all(model: "App\\Models\\ActivityLog")
+
+    # Query dengan paginasi dan search
+    allActivityLogPaginate(
+       search: String
+       first: Int
+       page: Int
+    ): ActivityLogPaginator!
+    @field(resolver: "App\\GraphQL\\ActivityLog\\Queries\\ActivityLogQuery@all")
 
     # cari berdasarkan id
     activityLog(id: ID! @eq(key: "id")): ActivityLog

@@ -3,85 +3,86 @@
 @section('title', 'Level')
 
 @section('content')
-    <div class="bg-slate-800/90 p-4 rounded-xl shadow w-full">
-        <h1 class="text-2xl font-bold mb-4 text-white">Data Level</h1>
+    <div class="bg-gradient-to-br from-indigo-900 via-purple-900 to-pink-900 p-6 rounded-2xl shadow-2xl w-full min-h-screen">
+        <h1 class="text-3xl font-bold mb-6 text-white text-center">Data Level</h1>
 
         {{-- Tombol Tambah & Pencarian --}}
-        <div class="flex justify-between mb-4">
+        <div class="flex justify-between mb-6">
             <input
                 type="text"
                 id="searchInput"
                 placeholder="Cari ID atau Nama..."
-                class="bg-slate-700/70 text-gray-200 placeholder-gray-400 border border-slate-600 p-2 rounded-lg w-64 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                class="bg-white/10 backdrop-blur-sm text-white placeholder-white/70 border border-white/20 p-3 rounded-xl w-64 focus:ring-2 focus:ring-cyan-400 focus:outline-none transition-all duration-300"
                 oninput="searchLevel()">
 
             <button onclick="openAddModal()"
-                class="bg-blue-500 text-white px-4 py-2 rounded">
-                Tambah Data
+                class="bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-600 hover:to-blue-600 text-white px-6 py-3 rounded-xl shadow-lg transform hover:scale-105 transition-all duration-300">
+                Tambah Level
             </button>
         </div>
 
         {{-- Tabel Data --}}
-        <table class="w-full border border-slate-700 rounded-lg overflow-hidden">
-            <thead class="bg-slate-700 text-gray-300 uppercase text-xs">
-                <tr>
-                    <th class="border border-slate-600 p-2 text-center">ID</th>
-                    <th class="border border-slate-600 p-2">Nama</th>
-                    <th class="border border-slate-600 p-2">Deskripsi</th>
-                    <th class="border border-slate-600 p-2">Tanggal Dibuat</th>
-                    <th class="border border-slate-600 p-2 text-center">Aksi</th>
-                </tr>
-            </thead>
-            <tbody id="dataLevel">
-                <tr>
-                        <td colspan="5" class="text-center p-4 text-gray-500">
+        <div class="bg-white/10 backdrop-blur-sm rounded-xl overflow-hidden shadow-2xl">
+            <table class="w-full">
+                <thead class="bg-gradient-to-r from-cyan-500 to-blue-500 text-white">
+                    <tr>
+                        <th class="p-4 text-center font-semibold">No</th>
+                        <th class="p-4 text-left font-semibold">Nama</th>
+                        <th class="p-4 text-left font-semibold">Deskripsi</th>
+                        <th class="p-4 text-left font-semibold">Tanggal Dibuat</th>
+                        <th class="p-4 text-center font-semibold">Aksi</th>
+                    </tr>
+                </thead>
+                <tbody id="dataLevel" class="text-white">
+                    <tr>
+                        <td colspan="5" class="text-center p-8">
                             <div class="flex flex-col items-center">
-                                <svg class="w-12 h-12 text-gray-400 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
-                                </svg>
-                                <p>Loading data...</p>
-                                <p class="text-sm">If this message persists, check your connection or try refreshing the page.</p>
+                                <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-cyan-400 mb-4"></div>
+                                <p class="text-lg font-medium">Loading data...</p>
+                                <p class="text-sm text-white/70 mt-2">If this message persists, check your connection or try refreshing the page.</p>
                             </div>
                         </td>
                     </tr>
-            </tbody>
-        </table>
-
+                </tbody>
+            </table>
+        </div>
 
         {{-- pagination navigasi --}}
-        <div class="flex justify-between items-center mt-4">
-            <div id="pageInfo" class="text-gray-600 text-sm">
+        <div class="flex justify-between items-center mt-6">
+            <div id="pageInfo" class="text-white/80 text-sm font-medium">
                 {{-- Info pagination akan diisi oleh JavaScript --}}
             </div>
             <div class="flex items-center gap-4">
-                <select id="perPage" class="border p-2 rounded" onChange="loadDataPaginate(1)">
-                    <option value="5">5</option>
-                    <option value="10" selected>10</option>
-                    <option value="25">25</option>
-                    <option value="50">50</option>
-                    <option value="100">100</option>
+                <select id="perPage" class="bg-white/10 backdrop-blur-sm text-white border border-white/20 p-2 rounded-lg focus:ring-2 focus:ring-cyan-400 focus:outline-none" onChange="loadDataPaginate(1)">
+                    <option value="5" class="text-black">5</option>
+                    <option value="10" selected class="text-black">10</option>
+                    <option value="25" class="text-black">25</option>
+                    <option value="50" class="text-black">50</option>
+                    <option value="100" class="text-black">100</option>
                 </select>
 
                 <div class="flex gap-2">
                     <button id="prevBtn" onclick="prevPage()"
-                    class="bg-gray-300 px-3 py-1 rounded disabled:opacity-50">
+                    class="bg-white/20 hover:bg-white/30 text-white px-4 py-2 rounded-lg disabled:opacity-50 transition-all duration-300">
                     Back
                     </button>
                     <button id="nextBtn" onclick="nextPage()"
-                    class="bg-gray-300 px-3 py-1 rounded disabled:opacity-50">
+                    class="bg-white/20 hover:bg-white/30 text-white px-4 py-2 rounded-lg disabled:opacity-50 transition-all duration-300">
                     Next
                     </button>
                 </div>
-                {{-- Kontrol pagination akan diisi oleh JavaScript --}}
             </div>
+        </div>
+
+        {{-- Include Modal Tambah --}}
+        @include('components.level.modal-add')
+
+        {{-- Include Modal Edit --}}
+        @include('components.level.modal-edit')
+
+        {{-- Script --}}
+        <script src="{{ asset('js/Level/level.js') }}"></script>
+        <script src="{{ asset('js/Level/level-create.js') }}"></script>
+        <script src="{{ asset('js/Level/level-edit.js') }}"></script>
     </div>
-
-    {{-- Include Modal Tambah --}}
-    @include('components.level.modal-add')
-
-    {{-- Include Modal Edit --}}
-    @include('components.level.modal-edit')
-
-    {{-- Script --}}
-    <script src="{{ asset('js/Level/level.js') }}"></script>
 @endsection

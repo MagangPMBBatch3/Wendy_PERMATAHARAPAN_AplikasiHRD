@@ -1,138 +1,88 @@
-// UserProfile Create Page JavaScript
-document.addEventListener('DOMContentLoaded', function() {
-    const form = document.getElementById('createProfileForm');
-    const submitBtn = document.getElementById('submitBtn');
-    const userSelect = document.getElementById('user_id');
-    const staffSelect = document.getElementById('staff_id');
+const API_URL = '/graphql';
 
-    // Load users and staff options
-    loadUsers();
-    loadStaff();
+function closeAddModal() {
+    document.getElementById('modalAdd').classList.add('hidden');
+    // Reset form
+    document.getElementById('addUserId').value = '';
+    document.getElementById('addStaffId').value = '';
+    document.getElementById('addNamaLengkap').value = '';
+    document.getElementById('addNrp').value = '';
+    document.getElementById('addAlamat').value = '';
+}
 
-    // Form submission
-    form.addEventListener('submit', async function(e) {
-        e.preventDefault();
+async function createUserProfile() {
+    const user_id = document.getElementById('addUserId').value.trim();
+    const staff_id = document.getElementById('addStaffId').value.trim();
+    const nama_lengkap = document.getElementById('addNamaLengkap').value.trim();
+    const nrp = document.getElementById('addNrp').value.trim();
+    const alamat = document.getElementById('addAlamat').value.trim();
 
-        if (!validateForm()) {
-            return;
-        }
-
-        submitBtn.disabled = true;
-        submitBtn.innerHTML = `
-            <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-            </svg>
-            Creating...
-        `;
-
-        try {
-            const formData = new FormData(form);
-            const profileData = {
-                user_id: parseInt(formData.get('user_id')),
-                staff_id: parseInt(formData.get('staff_id')),
-                nama_lengkap: formData.get('nama_lengkap'),
-                nrp: formData.get('nrp') || null,
-                alamat: formData.get('alamat') || null,
-                foto: formData.get('foto') ? await fileToBase64(formData.get('foto')) : null
-            };
-
-            const result = await UserProfileAPI.createUserProfile(profileData);
-
-            showNotification('Profile created successfully!', 'success');
-
-            // Redirect to index page after short delay
-            setTimeout(() => {
-                window.location.href = '/userprofile';
-            }, 1500);
-
-        } catch (error) {
-            console.error('Error creating profile:', error);
-            showNotification('Failed to create profile. Please try again.', 'error');
-
-            submitBtn.disabled = false;
-            submitBtn.innerHTML = `
-                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                </svg>
-                Create Profile
-            `;
-        }
-    });
-
-    // Load users for dropdown
-    async function loadUsers() {
-        try {
-            // This would need a separate API call to get users
-            // For now, we'll add some dummy options
-            const users = [
-                { id: 1, name: 'John Doe', email: 'john@example.com' },
-                { id: 2, name: 'Jane Smith', email: 'jane@example.com' }
-            ];
-
-            users.forEach(user => {
-                const option = document.createElement('option');
-                option.value = user.id;
-                option.textContent = `${user.name} (${user.email})`;
-                userSelect.appendChild(option);
-            });
-        } catch (error) {
-            console.error('Error loading users:', error);
-            showNotification('Failed to load users.', 'error');
-        }
+    // ✅ Enforce required fields (match your GraphQL schema)
+    if (!nama_lengkap) {
+        alert("Nama Lengkap harus diisi");
+        document.getElementById('addNamaLengkap').focus();
+        return;
+    }
+    if (!user_id) {
+        alert("User harus dipilih");
+        document.getElementById('addUserId').focus();
+        return;
+    }
+    if (!staff_id) {
+        alert("Staff harus dipilih");
+        document.getElementById('addStaffId').focus();
+        return;
     }
 
-    // Load staff for dropdown
-    async function loadStaff() {
-        try {
-            // Fetch staff data from API
-            const response = await fetch('/api/staff');
-            if (!response.ok) throw new Error('Network response was not ok');
-            const staff = await response.json();
-
-            staff.forEach(staffMember => {
-                const option = document.createElement('option');
-                option.value = staffMember.id;
-                option.textContent = staffMember.nama;
-                staffSelect.appendChild(option);
-            });
-        } catch (error) {
-            console.error('Error loading staff:', error);
-            showNotification('Failed to load staff.', 'error');
+    const mutation = `
+        mutation($input: CreateUserProfileInput!) {
+            createUserProfile(input: $input) {
+                id
+                nama_lengkap
+                nrp
+            }
         }
-    }
+    `;
 
-    // Form validation
-    function validateForm() {
-        const userId = document.getElementById('user_id').value;
-        const staffId = document.getElementById('staff_id').value;
-        const namaLengkap = document.getElementById('nama_lengkap').value.trim();
-
-        if (!userId) {
-            showNotification('Please select a user.', 'error');
-            return false;
+    // ✅ Send as integers (GraphQL ID! expects non-null)
+    const variables = {
+        input: {
+            user_id: parseInt(user_id),   // ← no null fallback
+            staff_id: parseInt(staff_id), // ← no null fallback
+            nama_lengkap,
+            nrp: nrp || null,
+            alamat: alamat || null
         }
+    };
 
-        if (!staffId) {
-            showNotification('Please select staff.', 'error');
-            return false;
-        }
-
-        if (!namaLengkap) {
-            showNotification('Full name is required.', 'error');
-            return false;
-        }
-
-        return true;
-    }
-
-    // Convert file to base64
-    function fileToBase64(file) {
-        return new Promise((resolve, reject) => {
-            const reader = new FileReader();
-            reader.readAsDataURL(file);
-            reader.onload = () => resolve(reader.result);
-            reader.onerror = error => reject(error);
+    try {
+        const res = await fetch(API_URL, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || ''
+            },
+            body: JSON.stringify({ query: mutation, variables })
         });
+
+        const json = await res.json();
+        
+        if (json.errors) {
+            throw new Error(json.errors[0]?.message || 'Unknown error');
+        }
+
+        if (json.data?.createUserProfile) {
+            alert('✅ User Profile berhasil dibuat!');
+            closeAddModal();
+            // Reload current page (or trigger refresh)
+            if (typeof loadDataPaginate === 'function') {
+                loadDataPaginate(1);
+            } else {
+                location.reload();
+            }
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        alert('❌ Gagal membuat user profile: ' + error.message);
     }
-});
+}
